@@ -1228,9 +1228,12 @@ public class MessageHelper {
                                                 ContactsContract.CommonDataKinds.Website.TYPE,
                                                 ContactsContract.CommonDataKinds.Website.URL
                                         },
-                                        ContactsContract.Data.CONTACT_ID + " = " + contactId +
-                                                " AND " + ContactsContract.Contacts.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE + "'",
-                                        null, null)) {
+                                        ContactsContract.Data.CONTACT_ID + " = ?" +
+                                                " AND " + ContactsContract.Contacts.Data.MIMETYPE + " = ?",
+                                        new String[]{
+                                                contactId,
+                                                ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE
+                                        }, null)) {
                                     while (web.moveToNext()) {
                                         int type = web.getInt(0);
                                         String url = web.getString(1);
@@ -1245,8 +1248,10 @@ public class MessageHelper {
                                                 ContactsContract.CommonDataKinds.Phone.TYPE,
                                                 ContactsContract.CommonDataKinds.Phone.NUMBER
                                         },
-                                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
-                                        null, null)) {
+                                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                        new String[]{
+                                                contactId
+                                        }, null)) {
                                     while (phones.moveToNext()) {
                                         int type = phones.getInt(0);
                                         String number = phones.getString(1);
