@@ -1933,7 +1933,8 @@ public class FragmentOptionsMisc extends FragmentBase implements SharedPreferenc
                                     ssb.append("\n");
                                 }
                             } catch (PackageManager.NameNotFoundException ex) {
-                                Log.e(ex);
+                                ssb.append(ex.toString()).append("\n")
+                                        .append(android.util.Log.getStackTraceString(ex)).append("\n");
                             }
 
                             ssb.append("\n");

@@ -634,10 +634,12 @@ public class FragmentBase extends Fragment {
                         return;
                     }
 
-                boolean report = !(ex instanceof IllegalArgumentException ||
+                if (ex instanceof IllegalArgumentException ||
                         ex instanceof FileNotFoundException ||
-                        ex instanceof SecurityException);
-                Log.unexpectedError(getParentFragmentManager(), ex, report);
+                        ex instanceof SecurityException)
+                    ToastEx.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                else
+                    Log.unexpectedError(getParentFragmentManager(), ex);
             }
         }.execute(this, args, "attachment:save");
     }
@@ -723,10 +725,12 @@ public class FragmentBase extends Fragment {
                         return;
                     }
 
-                boolean report = !(ex instanceof IllegalArgumentException ||
+                if (ex instanceof IllegalArgumentException ||
                         ex instanceof FileNotFoundException ||
-                        ex instanceof SecurityException);
-                Log.unexpectedError(getParentFragmentManager(), ex, report);
+                        ex instanceof SecurityException)
+                    ToastEx.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                else
+                    Log.unexpectedError(getParentFragmentManager(), ex);
             }
         }.execute(this, args, "attachments:save");
     }

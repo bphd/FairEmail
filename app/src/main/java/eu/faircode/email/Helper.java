@@ -1787,6 +1787,7 @@ public class Helper {
                         context.startActivity(intent);
                     } catch (Throwable ex) {
                         Log.e(ex);
+                        ToastEx.makeText(context, ex.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -2850,7 +2851,7 @@ public class Helper {
             if (file.exists()) {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                     if (!file.delete())
-                        Log.w("File not found: " + file);
+                        throw new FileNotFoundException(file.getAbsolutePath());
                 } else
                     Files.delete(Paths.get(file.getAbsolutePath()));
             }
@@ -3528,8 +3529,8 @@ public class Helper {
             Runtime.getRuntime().gc();
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException ex) {
-                Log.e(ex);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
         }
     }

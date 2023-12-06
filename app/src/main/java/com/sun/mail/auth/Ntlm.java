@@ -26,7 +26,6 @@ import java.io.PrintStream;
 import java.security.GeneralSecurityException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Locale;
 import java.util.Random;
 import java.util.logging.Level;
@@ -397,7 +396,7 @@ public class Ntlm {
 	    type3flags |= NTLMSSP_NEGOTIATE_EXTENDED_SESSIONSECURITY;
 	    byte[] nonce = new byte[8];
 	    // XXX - allow user to specify Random instance via properties?
-	    (new SecureRandom()).nextBytes(nonce);
+	    (new Random()).nextBytes(nonce);
 	    byte[] nthash = calcNTHash();
 	    lmresponse = calcV2Response(nthash, nonce, challenge);
 	    byte[] targetInfo = new byte[0];

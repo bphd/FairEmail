@@ -89,6 +89,7 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -483,7 +484,7 @@ public class Log {
             Log.i(sb.toString());
             Bugsnag.leaveBreadcrumb(name, ocrumb, BreadcrumbType.LOG);
         } catch (Throwable ex) {
-            Log.e(ex);
+            ex.printStackTrace();
         }
     }
 
@@ -2053,7 +2054,10 @@ public class Log {
 
                             @Override
                             protected void onException(Bundle args, Throwable ex) {
-                                // Ignored
+                                if (ex instanceof IllegalArgumentException)
+                                    ToastEx.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
+                                else
+                                    ToastEx.makeText(context, ex.toString(), Toast.LENGTH_LONG).show();
                             }
                         }.execute(getContext(), getActivity(), new Bundle(), "error:unexpected");
                     }

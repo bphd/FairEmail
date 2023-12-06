@@ -1892,8 +1892,10 @@ public class FragmentMessages extends FragmentBase
 
                     @Override
                     protected void onException(Bundle args, Throwable ex) {
-                        boolean report = !(ex instanceof IllegalArgumentException);
-                        Log.unexpectedError(getParentFragmentManager(), ex, report);
+                        if (ex instanceof IllegalArgumentException)
+                            ToastEx.makeText(getContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                        else
+                            Log.unexpectedError(getParentFragmentManager(), ex);
                     }
                 }.execute(FragmentMessages.this, args, "messages:search");
             }

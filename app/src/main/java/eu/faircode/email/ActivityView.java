@@ -1765,10 +1765,11 @@ public class ActivityView extends ActivityBilling implements FragmentManager.OnB
 
             @Override
             protected void onException(Bundle args, Throwable ex) {
-                if (args.getBoolean("always")) {
-                    boolean report = !(ex instanceof IllegalArgumentException || ex instanceof IOException);
-                    Log.unexpectedError(getSupportFragmentManager(), ex, report);
-                }
+                if (args.getBoolean("always"))
+                    if (ex instanceof IllegalArgumentException || ex instanceof IOException)
+                        ToastEx.makeText(ActivityView.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                    else
+                        Log.unexpectedError(getSupportFragmentManager(), ex);
             }
         }.execute(this, args, "update:check");
     }
@@ -2322,8 +2323,10 @@ public class ActivityView extends ActivityBilling implements FragmentManager.OnB
 
             @Override
             protected void onException(Bundle args, Throwable ex) {
-                boolean report = !(ex instanceof IllegalArgumentException);
-                Log.unexpectedError(getSupportFragmentManager(), ex, report);
+                if (ex instanceof IllegalArgumentException)
+                    ToastEx.makeText(ActivityView.this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                else
+                    Log.unexpectedError(getSupportFragmentManager(), ex);
             }
 
         }.execute(this, args, "debug:info");

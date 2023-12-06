@@ -277,7 +277,7 @@ public class EditTextCompose extends FixedEditText {
 
                         @Override
                         protected void onException(Bundle args, Throwable ex) {
-                            // Ignored
+                            ToastEx.makeText(getContext(), ex.toString(), Toast.LENGTH_LONG).show();
                         }
                     }.execute(activity, args, "dictionary:modify");
 
