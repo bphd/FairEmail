@@ -104,7 +104,7 @@ public class BASE64MailboxEncoder {
 		    writer.write('&');
 		    writer.write('-');
 		} else {
-			eu.faircode.email.Log.jni_char_array_writer_write_int(writer, current);
+		    eu.faircode.email.Log.jni_char_array_writer_write_int(writer, current);
 		}
 	    } else {
 

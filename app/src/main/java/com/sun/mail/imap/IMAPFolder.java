@@ -19,11 +19,13 @@ package com.sun.mail.imap;
 import android.os.SystemClock;
 
 import java.util.Date;
+import java.util.Vector;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.io.*;
 import java.net.SocketTimeoutException;
@@ -34,12 +36,11 @@ import javax.mail.event.*;
 import javax.mail.internet.*;
 import javax.mail.search.*;
 
+import com.sun.mail.util.PropUtil;
 import com.sun.mail.util.MailLogger;
 import com.sun.mail.util.CRLFOutputStream;
 import com.sun.mail.iap.*;
 import com.sun.mail.imap.protocol.*;
-
-import eu.faircode.email.MessageHelper;
 
 /**
  * This class implements an IMAP folder. <p>
@@ -1369,7 +1370,7 @@ public class IMAPFolder extends Folder implements UIDFolder, ResponseHandler {
      * @since JavaMail 1.4.6
      */
     protected IMAPMessage newIMAPMessage(int msgnum) {
-	return MessageHelper.jni_new_imap_message(this, msgnum);
+	return eu.faircode.email.MessageHelper.jni_new_imap_message(this, msgnum);
     }
 
     /**

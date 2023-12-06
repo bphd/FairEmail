@@ -584,7 +584,7 @@ public class POP3Message extends MimeMessage implements ReadableMime {
 		} catch (IOException ex) { }
 	    }
 	} else
-		eu.faircode.email.MessageHelper.jni_mime_message_write_to(this /* super */, os, ignoreList);
+	    eu.faircode.email.MessageHelper.jni_mime_message_write_to(this /* super */, os, ignoreList);
     }
 
     /**

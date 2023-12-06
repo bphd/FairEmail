@@ -236,7 +236,7 @@ public final class MailLogger {
 	ifDebugOut(msg);
 	if (logger.isLoggable(level)) {
 	    final StackTraceElement frame = inferCaller();
-		logRedirect(level, frame.getClassName(), frame.getMethodName(), msg);
+	    logRedirect(level, frame.getClassName(), frame.getMethodName(), msg);
 	}
     }
 
@@ -254,7 +254,7 @@ public final class MailLogger {
 	
 	if (logger.isLoggable(level)) {
 	    final StackTraceElement frame = inferCaller();
-		logRedirect(level, frame.getClassName(), frame.getMethodName(), msg, param1);
+	    logRedirect(level, frame.getClassName(), frame.getMethodName(), msg, param1);
 	}
     }
 
@@ -272,7 +272,7 @@ public final class MailLogger {
 	
 	if (logger.isLoggable(level)) {
 	    final StackTraceElement frame = inferCaller();
-		logRedirect(level, frame.getClassName(), frame.getMethodName(), msg, params);
+	    logRedirect(level, frame.getClassName(), frame.getMethodName(), msg, params);
 	}
     }
 
@@ -287,7 +287,7 @@ public final class MailLogger {
     public void logf(Level level, String msg, Object... params) {
 	msg = String.format(msg, params);
 	ifDebugOut(msg);
-		logRedirect(level, null, null, msg);
+	    logRedirect(level, null, null, msg);
     }
 
     /**
@@ -308,7 +308,7 @@ public final class MailLogger {
  
 	if (logger.isLoggable(level)) {
 	    final StackTraceElement frame = inferCaller();
-		logRedirect(level, frame.getClassName(), frame.getMethodName(), msg, thrown);
+	    logRedirect(level, frame.getClassName(), frame.getMethodName(), msg, thrown);
 	}
     }
 
