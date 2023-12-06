@@ -154,12 +154,6 @@ public final class XmlUtils {
 		factory.setNamespaceAware(true);
 		factory.setIgnoringComments(true);
 		applyXXEProtection(factory);
-		try {
-			factory.setFeature("http://xml.org/sax/features/external-general-entities", false);
-			factory.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
-		} catch (ParserConfigurationException ex) {
-			throw new SAXException(ex);
-		}
 
 		DocumentBuilder builder;
 		try {
@@ -175,7 +169,6 @@ public final class XmlUtils {
 	/**
 	 * Configures a {@link DocumentBuilderFactory} to protect it against XML
 	 * External Entity attacks.
-	 *
 	 * @param factory the factory
 	 * @see <a href=
 	 * "https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Prevention_Cheat_Sheet#Java">
@@ -205,7 +198,6 @@ public final class XmlUtils {
 	/**
 	 * Configures a {@link TransformerFactory} to protect it against XML
 	 * External Entity attacks.
-	 *
 	 * @param factory the factory
 	 * @see <a href=
 	 * "https://www.owasp.org/index.php/XML_External_Entity_%28XXE%29_Prevention_Cheat_Sheet#Java">
@@ -291,9 +283,7 @@ public final class XmlUtils {
 	 */
 	public static void toWriter(Node node, Writer writer, Map<String, String> outputProperties) throws TransformerException {
 		try {
-			TransformerFactory factory = TransformerFactory.newInstance();
-			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			Transformer transformer = eu.faircode.email.MessageHelper.jni_new_xml_transformer(factory);
+			Transformer transformer = TransformerFactory.newInstance().newTransformer();
 			for (Map.Entry<String, String> property : outputProperties.entrySet()) {
 				try {
 					transformer.setOutputProperty(property.getKey(), property.getValue());

@@ -39,7 +39,6 @@ public abstract class XmlConverter {
 	static {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		try {
-			dbFactory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 			documentBuilder = dbFactory.newDocumentBuilder();
 		} catch (ParserConfigurationException e) {
 			throw new RuntimeException(e);
