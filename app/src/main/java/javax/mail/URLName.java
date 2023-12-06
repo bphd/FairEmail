@@ -588,7 +588,7 @@ public class URLName {
 	    } else {
 		// convert to external encoding before hex conversion
 		try {
-		    writer.write(c);
+		    eu.faircode.email.Log.jni_stream_writer_write_char(writer, c);
 		    writer.flush();
 		} catch(IOException e) {
 		    buf.reset();
@@ -667,7 +667,7 @@ public class URLName {
                     } catch (NumberFormatException e) {
                         throw new IllegalArgumentException(
 			    "Illegal URL encoded value: " +
-			    s.substring(i,i+3));
+			    eu.faircode.email.MessageHelper.jni_get_string(s.substring(i,i+3)));
                     }
                     i += 2;
                     break;

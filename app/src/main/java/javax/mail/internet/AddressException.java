@@ -64,7 +64,7 @@ public class AddressException extends ParseException {
      */
     public AddressException(String s, String ref) {
 	super(s);
-	this.ref = ref;
+    this.ref = ref;
     }
 
     /**

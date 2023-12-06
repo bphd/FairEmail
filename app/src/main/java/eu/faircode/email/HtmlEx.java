@@ -59,7 +59,7 @@ public class HtmlEx {
     /**
      * @deprecated use {@link #toHtml(Spanned, int)} instead.
      */
-    @Deprecated
+    //@Deprecated
     public /* static */ String toHtml(Spanned text) {
         return toHtml(text, TO_HTML_PARAGRAPH_LINES_CONSECUTIVE);
     }

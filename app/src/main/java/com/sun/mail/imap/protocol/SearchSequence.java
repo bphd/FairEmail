@@ -54,7 +54,7 @@ public class SearchSequence {
     /**
      * Create a SearchSequence.
      */
-    @Deprecated
+    //@Deprecated
     public SearchSequence() {
     }
 

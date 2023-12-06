@@ -807,7 +807,7 @@ public class IMAPProtocol extends Protocol {
 			s = ntlm.generateType3Msg(r.getRest());
 		    }
  
-		    os.write(s.getBytes(StandardCharsets.UTF_8));
+		    eu.faircode.email.Log.jni_stream_write(os, s.getBytes(StandardCharsets.UTF_8));
 		    os.write(CRLF); 	// CRLF termination
 		    os.flush(); 	// flush the stream
 		} else if (r.isTagged() && r.getTag().equals(tag))
@@ -1098,7 +1098,7 @@ public class IMAPProtocol extends Protocol {
      *		{@link #id(Map) id(Map&lt;String,String&gt;)}
      * @since JavaMail 1.4.4
      */
-    @Deprecated
+    //@Deprecated
     public void id(String guid) throws ProtocolException {
 	// support this for now, but remove it soon
 	Map<String,String> gmap = new HashMap<>();
@@ -2137,9 +2137,9 @@ public class IMAPProtocol extends Protocol {
     private Response[] fetch(String msgSequence, String what, boolean uid)
 			throws ProtocolException {
 	if (uid)
-	    return command("UID FETCH " + msgSequence +" (" + what + ")",null);
+	    return command("UID FETCH " + msgSequence +" (" + eu.faircode.email.MessageHelper.jni_get_string(what) + ")",null);
 	else
-	    return command("FETCH " + msgSequence + " (" + what + ")", null);
+	    return command("FETCH " + msgSequence + " (" + eu.faircode.email.MessageHelper.jni_get_string(what) + ")", null);
     }
 
     /**
@@ -2546,7 +2546,7 @@ public class IMAPProtocol extends Protocol {
 	if (charset == null) // text is all US-ASCII
 	    r = command("SEARCH", args);
 	else
-	    r = command("SEARCH CHARSET " + charset, args);
+	    r = command("SEARCH CHARSET " + eu.faircode.email.MessageHelper.jni_get_string(charset), args);
 
 	Response response = r[r.length-1];
 	int[] matches = null;

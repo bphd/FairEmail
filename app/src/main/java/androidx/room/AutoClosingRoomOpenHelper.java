@@ -308,7 +308,7 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
             Cursor result;
             try {
                 SupportSQLiteDatabase db = mAutoCloser.incrementCountAndEnsureDbIsOpen();
-                result = db.query(query);
+                result = eu.faircode.email.DB.jni_db_query(db, query);
             } catch (Throwable throwable) {
                 mAutoCloser.decrementCountAndScheduleClose();
                 throw throwable;
@@ -322,7 +322,7 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
             Cursor result;
             try {
                 SupportSQLiteDatabase db = mAutoCloser.incrementCountAndEnsureDbIsOpen();
-                result = db.query(query, bindArgs);
+                result = eu.faircode.email.DB.jni_db_query_args(db, query, bindArgs);
             } catch (Throwable throwable) {
                 mAutoCloser.decrementCountAndScheduleClose();
                 throw throwable;
@@ -337,7 +337,7 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
             Cursor result;
             try {
                 SupportSQLiteDatabase db = mAutoCloser.incrementCountAndEnsureDbIsOpen();
-                result = db.query(query);
+                result = eu.faircode.email.DB.jni_db_query_query(db, query);
             } catch (Throwable throwable) {
                 mAutoCloser.decrementCountAndScheduleClose();
                 throw throwable;
@@ -352,7 +352,7 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
             Cursor result;
             try {
                 SupportSQLiteDatabase db = mAutoCloser.incrementCountAndEnsureDbIsOpen();
-                result = db.query(query, cancellationSignal);
+                result = eu.faircode.email.DB.jni_db_query_query_signal(db, query, cancellationSignal);
             } catch (Throwable throwable) {
                 mAutoCloser.decrementCountAndScheduleClose();
                 throw throwable;
@@ -371,20 +371,20 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
         @Override
         public int delete(String table, String whereClause, Object[] whereArgs) {
             return mAutoCloser.executeRefCountingFunction(
-                    db -> db.delete(table, whereClause, whereArgs));
+                    db -> eu.faircode.email.DB.jni_db_delete(db, table, whereClause, whereArgs));
         }
 
         @Override
         public int update(String table, int conflictAlgorithm, ContentValues values,
                 String whereClause, Object[] whereArgs) {
-            return mAutoCloser.executeRefCountingFunction(db -> db.update(table, conflictAlgorithm,
+            return mAutoCloser.executeRefCountingFunction(db -> eu.faircode.email.DB.jni_db_update(db, table, conflictAlgorithm,
                     values, whereClause, whereArgs));
         }
 
         @Override
         public void execSQL(String sql) throws SQLException {
             mAutoCloser.executeRefCountingFunction(db -> {
-                db.execSQL(sql);
+                eu.faircode.email.DB.jni_db_exec(db, sql);
                 return null;
             });
         }
@@ -392,7 +392,7 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
         @Override
         public void execSQL(String sql, Object[] bindArgs) throws SQLException {
             mAutoCloser.executeRefCountingFunction(db -> {
-                db.execSQL(sql, bindArgs);
+                eu.faircode.email.DB.jni_db_exec_args(db, sql, bindArgs);
                 return null;
             });
         }
@@ -657,7 +657,7 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
          * @deprecated see Cursor.deactivate
          */
         @Override
-        @Deprecated
+        //@Deprecated
         public void deactivate() {
             mDelegate.deactivate();
         }
@@ -666,7 +666,7 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
          * @deprecated see Cursor.requery
          */
         @Override
-        @Deprecated
+        //@Deprecated
         public boolean requery() {
             return mDelegate.requery();
         }
@@ -766,7 +766,7 @@ final class AutoClosingRoomOpenHelper implements SupportSQLiteOpenHelper, Delega
         private <T> T executeSqliteStatementWithRefCount(Function<SupportSQLiteStatement, T> func) {
             return mAutoCloser.executeRefCountingFunction(
                     db -> {
-                        SupportSQLiteStatement statement = db.compileStatement(mSql);
+                        SupportSQLiteStatement statement = eu.faircode.email.DB.jni_db_compile_statement(db, mSql);
                         doBinds(statement);
                         return func.apply(statement);
                     }

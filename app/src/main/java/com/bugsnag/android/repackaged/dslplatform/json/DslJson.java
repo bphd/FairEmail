@@ -177,7 +177,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 		 * @param fallback how to handle unsupported type
 		 * @return which fallback to use in case of unsupported type
 		 */
-		@Deprecated
+		//@Deprecated
 		public Settings<TContext> fallbackTo(@Nullable Fallback<TContext> fallback) {
 			this.fallback = fallback;
 			return this;
@@ -469,7 +469,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 	 * @param keyCache      parsed keys can be cached (this is only used in small subset of parsing)
 	 * @param serializers   additional serializers/deserializers which will be immediately registered into readers/writers
 	 */
-	@Deprecated
+	//@Deprecated
 	public DslJson(
 			@Nullable final TContext context,
 			final boolean javaSpecifics,
@@ -794,7 +794,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 	 * @param input JSON string
 	 * @return bound reader
 	 */
-	@Deprecated
+	//@Deprecated
 	public JsonReader<TContext> newReader(String input) {
 		final byte[] bytes = input.getBytes(UTF8);
 		return new JsonReader<TContext>(bytes, bytes.length, context, new char[64], keyCache, valuesCache, this, errorInfo, doublePrecision, unknownNumbers, maxNumberDigits, maxStringSize);
@@ -1331,7 +1331,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 		sw.writeByte(JsonWriter.OBJECT_END);
 	}
 
-	@Deprecated
+	//@Deprecated
 	@Nullable
 	public static Object deserializeObject(final JsonReader reader) throws IOException {
 		return ObjectConverter.deserializeObject(reader);
@@ -1343,7 +1343,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 	 * @return deseralized list
 	 * @throws IOException error during parsing
 	 */
-	@Deprecated
+	//@Deprecated
 	public static ArrayList<Object> deserializeList(final JsonReader reader) throws IOException {
 		return ObjectConverter.deserializeList(reader);
 	}
@@ -1354,7 +1354,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 	 * @return deserialized map
 	 * @throws IOException error during parsing
 	 */
-	@Deprecated
+	//@Deprecated
 	public static LinkedHashMap<String, Object> deserializeMap(final JsonReader reader) throws IOException {
 		return ObjectConverter.deserializeMap(reader);
 	}
@@ -2567,7 +2567,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 	 * @param array items
 	 * @param <T> type
 	 */
-	@Deprecated
+	//@Deprecated
 	public <T extends JsonObject> void serialize(final JsonWriter writer, @Nullable final T[] array) {
 		if (array == null) {
 			writer.writeNull();
@@ -2602,7 +2602,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 	 * @param len part of array
 	 * @param <T> type
 	 */
-	@Deprecated
+	//@Deprecated
 	public <T extends JsonObject> void serialize(final JsonWriter writer, final T[] array, final int len) {
 		if (writer == null) {
 			throw new IllegalArgumentException("writer can't be null");
@@ -2639,7 +2639,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 	 * @param list items
 	 * @param <T> type
 	 */
-	@Deprecated
+	//@Deprecated
 	public <T extends JsonObject> void serialize(final JsonWriter writer, @Nullable final List<T> list) {
 		if (writer == null) {
 			throw new IllegalArgumentException("writer can't be null");
@@ -2676,7 +2676,7 @@ public class DslJson<TContext> implements UnknownSerializer, TypeLookup {
 	 * @param collection items
 	 * @param <T> type
 	 */
-	@Deprecated
+	//@Deprecated
 	public <T extends JsonObject> void serialize(final JsonWriter writer, @Nullable final Collection<T> collection) {
 		if (writer == null) {
 			throw new IllegalArgumentException("writer can't be null");

@@ -634,7 +634,7 @@ public class SMTPTransport extends Transport {
      * @since JavaMail 1.3.2
      */
     public synchronized String getLastServerResponse() {
-	return lastServerResponse;
+	return eu.faircode.email.MessageHelper.jni_get_string(lastServerResponse);
     }
 
     /**
@@ -1108,7 +1108,7 @@ public class SMTPTransport extends Transport {
 	    String type3 = ntlm.generateType3Msg(
 		    getLastServerResponse().substring(4).trim());
 
-	    resp = simpleCommand(type3);
+	    resp = simpleCommand(eu.faircode.email.MessageHelper.jni_get_string(type3));
 	}
     }
 
@@ -1304,12 +1304,12 @@ public class SMTPTransport extends Transport {
 
 	    eu.faircode.email.ObjectHolder<Integer> total = new eu.faircode.email.ObjectHolder<>();
 	    total.value = 0;
-	    this.message.writeTo(new OutputStream(){
+	    eu.faircode.email.MessageHelper.jni_mime_message_write_to(this.message, new OutputStream(){
 			@Override
 			public void write(int b) throws IOException {
 				total.value++;
 			}
-		});
+		}, null);
 
 	    Integer _fd = null;
 	    try {
@@ -1356,10 +1356,10 @@ public class SMTPTransport extends Transport {
 		 * from the message content, and b) the message content is
 		 * encoded before we even know that we can use BDAT.
 		 */
-		this.message.writeTo(bdat(), ignoreList);
+		eu.faircode.email.MessageHelper.jni_mime_message_write_to(this.message, bdat(), ignoreList);
 		finishBdat();
 	    } else {
-		this.message.writeTo(data(), ignoreList);
+		eu.faircode.email.MessageHelper.jni_mime_message_write_to(this.message, data(), ignoreList);
 		finishData();
 	    }
 	    if (sendPartiallyFailed) {
@@ -1726,7 +1726,7 @@ public class SMTPTransport extends Transport {
      */
     protected void helo(String domain) throws MessagingException {
 	if (domain != null)
-	    issueCommand("HELO " + domain, 250);
+	    issueCommand("HELO " + eu.faircode.email.MessageHelper.jni_get_string(domain), 250);
 	else
 	    issueCommand("HELO", 250);
     }
@@ -2454,7 +2454,7 @@ public class SMTPTransport extends Transport {
 		issueCommand("RSET", -1);
 	    lastServerResponse = _lsr;	// restore, for get
 	    lastReturnCode = _lrc;
-	    throw new SMTPSendFailedException(cmd, ret, lastServerResponse,
+	    throw new SMTPSendFailedException(eu.faircode.email.MessageHelper.jni_get_string(cmd), ret, eu.faircode.email.MessageHelper.jni_get_string(lastServerResponse),
 			exception, validSentAddr, validUnsentAddr, invalidAddr);
 	}
     }
@@ -2507,7 +2507,7 @@ public class SMTPTransport extends Transport {
 	    //logger.fine("SENT: " + new String(cmdBytes, 0));
 
         try {
-	    serverOutput.write(cmdBytes);
+	    eu.faircode.email.Log.jni_stream_write(serverOutput, cmdBytes);
 	    serverOutput.write(CRLF);
 	    serverOutput.flush();
 	} catch (IOException ex) {

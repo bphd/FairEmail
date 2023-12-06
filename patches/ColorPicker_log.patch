@@ -1,0 +1,31 @@
+diff --git a/colorpicker/src/main/java/com/flask/colorpicker/ColorPickerView.java b/colorpicker/src/main/java/com/flask/colorpicker/ColorPickerView.java
+index bdd798029a..26d7f5e5ff 100644
+--- a/colorpicker/src/main/java/com/flask/colorpicker/ColorPickerView.java
++++ b/colorpicker/src/main/java/com/flask/colorpicker/ColorPickerView.java
+@@ -68,7 +68,7 @@ public class ColorPickerView extends View {
+ 				// set the color without changing the edit text preventing stack overflow
+ 				setColor(color, false);
+ 			} catch (Exception e) {
+-				e.printStackTrace();
++				; //e.printStackTrace();
+ 			}
+ 		}
+ 
+@@ -245,7 +245,7 @@ public class ColorPickerView extends View {
+ 						try {
+ 							listener.onColorSelected(selectedColor);
+ 						} catch (Exception e) {
+-							e.printStackTrace();
++							; //e.printStackTrace();
+ 						}
+ 					}
+ 				}
+@@ -265,7 +265,7 @@ public class ColorPickerView extends View {
+ 				try {
+ 					listener.onColorChanged(newColor);
+ 				} catch (Exception e) {
+-					e.printStackTrace();
++					; //e.printStackTrace();
+ 				}
+ 			}
+ 		}

@@ -170,7 +170,7 @@ public class DatabaseConfiguration {
      *
      * @hide
      */
-    @Deprecated
+    //@Deprecated
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     public DatabaseConfiguration(@NonNull Context context, @Nullable String name,
             @NonNull SupportSQLiteOpenHelper.Factory sqliteOpenHelperFactory,
@@ -213,7 +213,7 @@ public class DatabaseConfiguration {
      *
      * @hide
      */
-    @Deprecated
+    //@Deprecated
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     public DatabaseConfiguration(@NonNull Context context, @Nullable String name,
             @NonNull SupportSQLiteOpenHelper.Factory sqliteOpenHelperFactory,
@@ -261,7 +261,7 @@ public class DatabaseConfiguration {
      *
      * @hide
      */
-    @Deprecated
+    //@Deprecated
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     public DatabaseConfiguration(@NonNull Context context, @Nullable String name,
             @NonNull SupportSQLiteOpenHelper.Factory sqliteOpenHelperFactory,
@@ -313,7 +313,7 @@ public class DatabaseConfiguration {
      *
      * @hide
      */
-    @Deprecated
+    //@Deprecated
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     public DatabaseConfiguration(@NonNull Context context, @Nullable String name,
             @NonNull SupportSQLiteOpenHelper.Factory sqliteOpenHelperFactory,
@@ -368,7 +368,7 @@ public class DatabaseConfiguration {
      *
      * @hide
      */
-    @Deprecated
+    //@Deprecated
     @SuppressLint("LambdaLast")
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     public DatabaseConfiguration(@NonNull Context context, @Nullable String name,
@@ -426,7 +426,7 @@ public class DatabaseConfiguration {
      *
      * @hide
      */
-    @Deprecated
+    //@Deprecated
     @SuppressLint("LambdaLast")
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     public DatabaseConfiguration(@NonNull Context context, @Nullable String name,
@@ -486,7 +486,7 @@ public class DatabaseConfiguration {
      *
      * @hide
      */
-    @Deprecated
+    //@Deprecated
     @SuppressLint("LambdaLast")
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     public DatabaseConfiguration(@NonNull Context context, @Nullable String name,
@@ -599,7 +599,7 @@ public class DatabaseConfiguration {
      * @deprecated Use {@link #isMigrationRequired(int, int)} which takes
      * {@link #allowDestructiveMigrationOnDowngrade} into account.
      */
-    @Deprecated
+    //@Deprecated
     public boolean isMigrationRequiredFrom(int version) {
         return isMigrationRequired(version, version + 1);
     }

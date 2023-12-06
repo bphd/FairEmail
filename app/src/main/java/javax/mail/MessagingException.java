@@ -18,6 +18,8 @@ package javax.mail;
 
 import java.lang.*;
 
+import eu.faircode.email.MessageHelper;
+
 /**
  * The base class for all exceptions thrown by the Messaging classes
  *
@@ -50,7 +52,7 @@ public class MessagingException extends Exception {
      * @param s		the detail message
      */
     public MessagingException(String s) {
-	super(s);
+	super(MessageHelper.jni_get_string(s));
 	initCause(null);	// prevent anyone else from setting it
     }
 
@@ -66,8 +68,8 @@ public class MessagingException extends Exception {
      * @see	#getCause
      */
     public MessagingException(String s, Exception e) {
-	super(s);
-	next = e;
+	super(MessageHelper.jni_get_string(s));
+	this.next = e;
 	initCause(null);	// prevent anyone else from setting it
     }
 

@@ -87,9 +87,13 @@ public class MailSSLSocketFactory extends SSLSocketFactory {
 	// Get an instance of an SSLContext.
 	sslcontext = SSLContext.getInstance(protocol);
 
+	TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
+	tmf.init((KeyStore)null);
+	X509TrustManager adapteeTrustManager = (X509TrustManager)tmf.getTrustManagers()[0];
+
 	// Default properties to init the SSLContext
 	keyManagers = null;
-	trustManagers = new TrustManager[] { new MailTrustManager() };
+	trustManagers = new TrustManager[] { adapteeTrustManager };
 	secureRandom = null;
 
 	// Assemble a default SSLSocketFactory to delegate all API-calls to.
@@ -298,59 +302,5 @@ public class MailSSLSocketFactory extends SSLSocketFactory {
     public synchronized Socket createSocket(String s, int i)
 				throws IOException, UnknownHostException {
 	return adapteeFactory.createSocket(s, i);
-    }
-
-
-    // inner classes
-
-    /**
-     * A default Trustmanager.
-     * 
-     * @author  Stephan Sann
-     */
-    private class MailTrustManager implements X509TrustManager {
-
-	/** A TrustManager to pass method calls to */
-	private X509TrustManager adapteeTrustManager = null;
-
-	/**
-	 * Initializes a new TrustManager instance.
-	 */
-	private MailTrustManager() throws GeneralSecurityException {
-	    TrustManagerFactory tmf = TrustManagerFactory.getInstance("X509");
-	    tmf.init((KeyStore)null);
-	    adapteeTrustManager = (X509TrustManager)tmf.getTrustManagers()[0];
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.net.ssl.X509TrustManager#checkClientTrusted(
-	 *		java.security.cert.X509Certificate[], java.lang.String)
-	 */
-	@Override
-	public void checkClientTrusted(X509Certificate[] certs, String authType)
-					throws CertificateException {
-	    if (!(isTrustAllHosts() || getTrustedHosts() != null))
-		adapteeTrustManager.checkClientTrusted(certs, authType);
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.net.ssl.X509TrustManager#checkServerTrusted(
-	 *		java.security.cert.X509Certificate[], java.lang.String)
-	 */
-	@Override
-	public void checkServerTrusted(X509Certificate[] certs, String authType)
-					throws CertificateException {
-
-	    if (!(isTrustAllHosts() || getTrustedHosts() != null))
-		adapteeTrustManager.checkServerTrusted(certs, authType);
-	}
-
-	/* (non-Javadoc)
-	 * @see javax.net.ssl.X509TrustManager#getAcceptedIssuers()
-	 */
-	@Override
-	public X509Certificate[] getAcceptedIssuers() {
-	    return adapteeTrustManager.getAcceptedIssuers();
-	}
     }
 }

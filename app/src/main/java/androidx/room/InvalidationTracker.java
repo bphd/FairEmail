@@ -242,12 +242,12 @@ public class InvalidationTracker {
             stringBuilder.setLength(0);
             stringBuilder.append("DROP TRIGGER IF EXISTS ");
             appendTriggerName(stringBuilder, tableName, trigger);
-            writableDb.execSQL(stringBuilder.toString());
+            eu.faircode.email.DB.jni_db_exec(writableDb, stringBuilder.toString());
         }
     }
 
     private void startTrackingTable(SupportSQLiteDatabase writableDb, int tableId) {
-        writableDb.execSQL(
+        eu.faircode.email.DB.jni_db_exec(writableDb,
                 "INSERT OR IGNORE INTO " + UPDATE_TABLE_NAME + " VALUES(" + tableId + ", 0)");
         final String tableName = mTableNames[tableId];
         StringBuilder stringBuilder = new StringBuilder();
@@ -265,7 +265,7 @@ public class InvalidationTracker {
                     .append(" WHERE ").append(TABLE_ID_COLUMN_NAME).append(" = ").append(tableId)
                     .append(" AND ").append(INVALIDATED_COLUMN_NAME).append(" = 0")
                     .append("; END");
-            writableDb.execSQL(stringBuilder.toString());
+            eu.faircode.email.DB.jni_db_exec(writableDb, stringBuilder.toString());
         }
     }
 
@@ -610,7 +610,7 @@ public class InvalidationTracker {
      * invalidates.
      * @hide
      */
-    @Deprecated
+    //@Deprecated
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     public <T> LiveData<T> createLiveData(String[] tableNames, Callable<T> computeFunction) {
         return createLiveData(tableNames, false, computeFunction);

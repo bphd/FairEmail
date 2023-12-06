@@ -37,16 +37,39 @@ public class LogSupport {
 	// private constructor, can't create instances
     }
 
+    private static void logRedirect(Level level, String clazz, String method, String msg, Object... params) {
+        if (Level.OFF.equals(level))
+            return;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("JavaMail: ")
+                .append(clazz == null ? "*" : clazz).append(':').append(method == null ? "*" : method)
+                .append(' ').append(msg);
+
+        for (Object param : params)
+            sb.append(' ').append(param == null ? "<null>" : param.toString());
+
+        int l = (level == null ? 800 : level.intValue());
+        if (l >= 1000) // severe
+            eu.faircode.email.Log.e(sb.toString());
+        else if (l >= 900) // warning
+            eu.faircode.email.Log.w(sb.toString());
+        else if (l >= 800 || l < 0) // info/all
+            eu.faircode.email.Log.i(sb.toString());
+        else
+            eu.faircode.email.Log.d(sb.toString());
+    }
+
     public static void log(String msg) {
 	if (debug)
-	    System.out.println(msg);
-	logger.log(level, msg);
+	    ; //System.out.println(msg);
+        logRedirect(level, null, null, msg);
     }
 
     public static void log(String msg, Throwable t) {
 	if (debug)
-	    System.out.println(msg + "; Exception: " + t);
-	logger.log(level, msg, t);
+	    ; //System.out.println(msg + "; Exception: " + t);
+        logRedirect(level, null, null, msg, t);
     }
 
     public static boolean isLoggable() {

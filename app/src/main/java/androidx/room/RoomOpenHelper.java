@@ -141,7 +141,7 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
     private void checkIdentity(SupportSQLiteDatabase db) {
         if (hasRoomMasterTable(db)) {
             String identityHash = null;
-            Cursor cursor = db.query(new SimpleSQLiteQuery(RoomMasterTable.READ_QUERY));
+            Cursor cursor = eu.faircode.email.DB.jni_db_query_query(db, new SimpleSQLiteQuery(RoomMasterTable.READ_QUERY));
             //noinspection TryFinallyCanBeTryWithResources
             try {
                 if (cursor.moveToFirst()) {
@@ -170,7 +170,7 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
 
     private void updateIdentity(SupportSQLiteDatabase db) {
         createMasterTableIfNotExists(db);
-        db.execSQL(RoomMasterTable.createInsertQuery(mIdentityHash));
+        eu.faircode.email.DB.jni_db_exec(db, RoomMasterTable.createInsertQuery(mIdentityHash));
     }
 
     private void createMasterTableIfNotExists(SupportSQLiteDatabase db) {
@@ -225,7 +225,7 @@ public class RoomOpenHelper extends SupportSQLiteOpenHelper.Callback {
          *
          * @deprecated Use {@link #onValidateSchema(SupportSQLiteDatabase)}
          */
-        @Deprecated
+        //@Deprecated
         protected void validateMigration(SupportSQLiteDatabase db) {
             throw new UnsupportedOperationException("validateMigration is deprecated");
         }

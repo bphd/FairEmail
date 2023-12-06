@@ -308,7 +308,7 @@ public final class TableInfo {
      */
     @Nullable
     private static Index readIndex(SupportSQLiteDatabase database, String name, boolean unique) {
-        Cursor cursor = database.query("PRAGMA index_xinfo(`" + name + "`)");
+        Cursor cursor = eu.faircode.email.DB.jni_db_query(database, "PRAGMA index_xinfo(`" + name + "`)");
         try {
             final int seqnoColumnIndex = cursor.getColumnIndex("seqno");
             final int cidColumnIndex = cursor.getColumnIndex("cid");
@@ -395,7 +395,7 @@ public final class TableInfo {
         /**
          * @deprecated Use {@link Column#Column(String, String, boolean, int, String, int)} instead.
          */
-        @Deprecated
+        //@Deprecated
         public Column(String name, String type, boolean notNull, int primaryKeyPosition) {
             this(name, type, notNull, primaryKeyPosition, null, CREATED_FROM_UNKNOWN);
         }

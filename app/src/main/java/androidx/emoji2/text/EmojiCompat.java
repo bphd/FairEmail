@@ -908,7 +908,7 @@ public class EmojiCompat {
      *
      * @throws IllegalStateException if not initialized yet
      */
-    @Deprecated
+    //@Deprecated
     public boolean hasEmojiGlyph(@NonNull final CharSequence sequence) {
         Preconditions.checkState(isInitialized(), "Not initialized yet");
         Preconditions.checkNotNull(sequence, "sequence cannot be null");
@@ -929,7 +929,7 @@ public class EmojiCompat {
      *
      * @throws IllegalStateException if not initialized yet
      */
-    @Deprecated
+    //@Deprecated
     public boolean hasEmojiGlyph(@NonNull final CharSequence sequence,
             @IntRange(from = 0) final int metadataVersion) {
         Preconditions.checkState(isInitialized(), "Not initialized yet");

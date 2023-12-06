@@ -85,7 +85,7 @@ public abstract class RoomDatabase {
      *
      * @deprecated Will be hidden in the next release.
      */
-    @Deprecated
+    //@Deprecated
     protected volatile SupportSQLiteDatabase mDatabase;
     private Executor mQueryExecutor;
     private Executor mTransactionExecutor;
@@ -99,7 +99,7 @@ public abstract class RoomDatabase {
      */
     @RestrictTo(RestrictTo.Scope.LIBRARY_GROUP_PREFIX)
     @Nullable
-    @Deprecated
+    //@Deprecated
     protected List<Callback> mCallbacks;
 
     /**
@@ -499,7 +499,7 @@ public abstract class RoomDatabase {
      */
     @NonNull
     public Cursor query(@NonNull String query, @Nullable Object[] args) {
-        return mOpenHelper.getWritableDatabase().query(new SimpleSQLiteQuery(query, args));
+        return eu.faircode.email.DB.jni_db_query_query(mOpenHelper.getWritableDatabase(), eu.faircode.email.DB.jni_db_simple_query_ctor(query, args));
     }
 
     /**
@@ -525,9 +525,9 @@ public abstract class RoomDatabase {
         assertNotMainThread();
         assertNotSuspendingTransaction();
         if (signal != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-            return mOpenHelper.getWritableDatabase().query(query, signal);
+            return eu.faircode.email.DB.jni_db_query_query_signal(mOpenHelper.getWritableDatabase(), query, signal);
         } else {
-            return mOpenHelper.getWritableDatabase().query(query);
+            return eu.faircode.email.DB.jni_db_query_query(mOpenHelper.getWritableDatabase(), query);
         }
     }
 
@@ -540,7 +540,7 @@ public abstract class RoomDatabase {
     public SupportSQLiteStatement compileStatement(@NonNull String sql) {
         assertNotMainThread();
         assertNotSuspendingTransaction();
-        return mOpenHelper.getWritableDatabase().compileStatement(sql);
+        return eu.faircode.email.DB.jni_db_compile_statement(mOpenHelper.getWritableDatabase(), sql);
     }
 
     /**
@@ -548,7 +548,7 @@ public abstract class RoomDatabase {
      *
      * @deprecated Use {@link #runInTransaction(Runnable)}
      */
-    @Deprecated
+    //@Deprecated
     public void beginTransaction() {
         assertNotMainThread();
         if (mAutoCloser == null) {
@@ -578,7 +578,7 @@ public abstract class RoomDatabase {
      *
      * @deprecated Use {@link #runInTransaction(Runnable)}
      */
-    @Deprecated
+    //@Deprecated
     public void endTransaction() {
         if (mAutoCloser == null) {
             internalEndTransaction();
@@ -620,7 +620,7 @@ public abstract class RoomDatabase {
      *
      * @deprecated Use {@link #runInTransaction(Runnable)}
      */
-    @Deprecated
+    //@Deprecated
     public void setTransactionSuccessful() {
         mOpenHelper.getWritableDatabase().setTransactionSuccessful();
     }

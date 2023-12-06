@@ -737,7 +737,7 @@ public class FragmentQuickSetup extends FragmentBase {
                     grpManual.setVisibility(View.VISIBLE);
 
                 if (ex instanceof IllegalArgumentException || ex instanceof UnknownHostException) {
-                    tvError.setText(ex.getMessage());
+                    tvError.setText(Log.jni_throwable_get_message(ex));
                     grpError.setVisibility(View.VISIBLE);
 
                     getMainHandler().post(new Runnable() {

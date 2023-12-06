@@ -46,7 +46,6 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -293,7 +292,7 @@ public class ProtectedContent {
 
                         @Override
                         protected void onException(Bundle args, Throwable ex) {
-                            tvError.setText(ex.getMessage());
+                            tvError.setText(Log.jni_throwable_get_message(ex));
                             tvErrorDetail.setText(ex.toString());
                             tvError.setVisibility(View.VISIBLE);
                             tvErrorDetail.setVisibility(View.VISIBLE);
@@ -387,8 +386,7 @@ public class ProtectedContent {
 
                                 @Override
                                 protected void onException(Bundle args, Throwable ex) {
-                                    Log.e(ex);
-                                    ToastEx.makeText(context, ex.toString(), Toast.LENGTH_LONG).show();
+                                    // Ignored
                                 }
                             }.execute(context, owner, args, "protect");
                         }

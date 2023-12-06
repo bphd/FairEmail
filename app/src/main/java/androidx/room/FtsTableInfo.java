@@ -85,7 +85,7 @@ public final class FtsTableInfo {
 
     @SuppressWarnings("TryFinallyCanBeTryWithResources")
     private static Set<String> readColumns(SupportSQLiteDatabase database, String tableName) {
-        Cursor cursor = database.query("PRAGMA table_info(`" + tableName + "`)");
+        Cursor cursor = eu.faircode.email.DB.jni_db_query(database, "PRAGMA table_info(`" + tableName + "`)");
         Set<String> columns = new HashSet<>();
         try {
             if (cursor.getColumnCount() > 0) {
@@ -103,7 +103,7 @@ public final class FtsTableInfo {
     @SuppressWarnings("TryFinallyCanBeTryWithResources")
     private static Set<String> readOptions(SupportSQLiteDatabase database, String tableName) {
         String sql = "";
-        Cursor cursor = database.query(
+        Cursor cursor = eu.faircode.email.DB.jni_db_query(database,
                 "SELECT * FROM sqlite_master WHERE `name` = '" + tableName + "'");
         try {
             if (cursor.moveToFirst()) {

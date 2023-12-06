@@ -136,17 +136,17 @@ public final class JsonReader<TContext> {
 	 * @param buffer input JSON
 	 * @param context context
 	 */
-	@Deprecated
+	//@Deprecated
 	public JsonReader(final byte[] buffer, @Nullable final TContext context) {
 		this(buffer, context, null, null);
 	}
 
-	@Deprecated
+	//@Deprecated
 	public JsonReader(final byte[] buffer, @Nullable final TContext context, @Nullable StringCache keyCache, @Nullable StringCache valuesCache) {
 		this(buffer, buffer.length, context, new char[64], keyCache, valuesCache);
 	}
 
-	@Deprecated
+	//@Deprecated
 	public JsonReader(final byte[] buffer, final TContext context, final char[] tmp) {
 		this(buffer, buffer.length, context, tmp);
 		if (tmp == null) {
@@ -154,17 +154,17 @@ public final class JsonReader<TContext> {
 		}
 	}
 
-	@Deprecated
+	//@Deprecated
 	public JsonReader(final byte[] buffer, final int length, final TContext context) {
 		this(buffer, length, context, new char[64]);
 	}
 
-	@Deprecated
+	//@Deprecated
 	public JsonReader(final byte[] buffer, final int length, final TContext context, final char[] tmp) {
 		this(buffer, length, context, tmp, null, null);
 	}
 
-	@Deprecated
+	//@Deprecated
 	public JsonReader(final byte[] buffer, final int length, @Nullable final TContext context, final char[] tmp, @Nullable final StringCache keyCache, @Nullable final StringCache valuesCache) {
 		this(tmp, buffer, length, context, keyCache, valuesCache, null, ErrorInfo.WITH_STACK_TRACE, DoublePrecision.DEFAULT, UnknownNumberParsing.LONG_AND_BIGDECIMAL, 512, 256 * 1024 * 1024);
 		if (tmp == null) {
@@ -207,7 +207,7 @@ public final class JsonReader<TContext> {
 	 * @param stream process stream
 	 * @throws IOException error reading from stream
 	 */
-	@Deprecated
+	//@Deprecated
 	public final void reset(final InputStream stream) throws IOException {
 		process(stream);
 	}
@@ -216,7 +216,7 @@ public final class JsonReader<TContext> {
 	 * Will be removed. Exists only for backward compatibility
 	 * @param size size of byte[] input to use
 	 */
-	@Deprecated
+	//@Deprecated
 	final void reset(final int size) {
 		process(null, size);
 	}
@@ -503,7 +503,7 @@ public final class JsonReader<TContext> {
 	 *
 	 * @return parsed chars from a number
 	 */
-	@Deprecated
+	//@Deprecated
 	public final char[] readNumber() {
 		tokenStart = currentIndex - 1;
 		tmp[0] = (char) last;
@@ -1188,7 +1188,7 @@ public final class JsonReader<TContext> {
 	 * @return not used anymore
 	 * @throws IOException throws if invalid JSON detected
 	 */
-	@Deprecated
+	//@Deprecated
 	public String readNext() throws IOException {
 		final int start = currentIndex - 1;
 		skip();

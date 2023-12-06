@@ -89,7 +89,7 @@ class ConcurrencyHelpers {
      * @return an executor that posts all work to that handler
      */
     @NonNull
-    @Deprecated
+    //@Deprecated
     static Executor convertHandlerToExecutor(@NonNull Handler handler) {
         return handler::post;
     }

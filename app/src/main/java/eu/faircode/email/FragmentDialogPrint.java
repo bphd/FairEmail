@@ -429,26 +429,22 @@ public class FragmentDialogPrint extends FragmentDialogBase {
                             PrintJob job = printManager.print(jobName, adapter, new PrintAttributes.Builder().build());
                             EntityLog.log(context, "Print queued job=" + job.getInfo());
                         } catch (Throwable ex) {
-                            try {
-                                // android.content.ActivityNotFoundException: No Activity found to handle null
-                                // 	at android.app.Instrumentation.checkStartActivityResult(Instrumentation.java:2206)
-                                // 	at android.app.Activity.startIntentSenderForResultInner(Activity.java:6020)
-                                // 	at android.app.Activity.startIntentSenderForResult(Activity.java:5983)
-                                // 	at androidx.activity.ComponentActivity.startIntentSenderForResult(SourceFile:2)
-                                // 	at android.app.Activity.startIntentSenderForResult(Activity.java:5938)
-                                // 	at androidx.activity.ComponentActivity.startIntentSenderForResult(SourceFile:1)
-                                // 	at android.app.Activity.startIntentSender(Activity.java:6186)
-                                // 	at android.app.Activity.startIntentSender(Activity.java:6152)
-                                // 	at android.print.PrintManager.print(PrintManager.java:538)
-                                // 	at eu.faircode.email.FragmentDialogPrint$7$2.onPageFinished(SourceFile:127)
-                                boolean report = !(ex instanceof ActivityNotFoundException);
-                                if (ex instanceof ActivityNotFoundException)
-                                    ex = new Throwable("A system app or component required for printing is missing." +
-                                            " Is the print spooler still enabled?", ex);
-                                Log.unexpectedError(fm, ex, report);
-                            } catch (IllegalStateException exex) {
-                                ToastEx.makeText(context, Log.formatThrowable(ex), Toast.LENGTH_LONG).show();
-                            }
+                            // android.content.ActivityNotFoundException: No Activity found to handle null
+                            // 	at android.app.Instrumentation.checkStartActivityResult(Instrumentation.java:2206)
+                            // 	at android.app.Activity.startIntentSenderForResultInner(Activity.java:6020)
+                            // 	at android.app.Activity.startIntentSenderForResult(Activity.java:5983)
+                            // 	at androidx.activity.ComponentActivity.startIntentSenderForResult(SourceFile:2)
+                            // 	at android.app.Activity.startIntentSenderForResult(Activity.java:5938)
+                            // 	at androidx.activity.ComponentActivity.startIntentSenderForResult(SourceFile:1)
+                            // 	at android.app.Activity.startIntentSender(Activity.java:6186)
+                            // 	at android.app.Activity.startIntentSender(Activity.java:6152)
+                            // 	at android.print.PrintManager.print(PrintManager.java:538)
+                            // 	at eu.faircode.email.FragmentDialogPrint$7$2.onPageFinished(SourceFile:127)
+                            boolean report = !(ex instanceof ActivityNotFoundException);
+                            if (ex instanceof ActivityNotFoundException)
+                                ex = new Throwable("A system app or component required for printing is missing." +
+                                        " Is the print spooler still enabled?", ex);
+                            Log.unexpectedError(fm, ex, report);
                         } finally {
                             printWebView = null;
                         }

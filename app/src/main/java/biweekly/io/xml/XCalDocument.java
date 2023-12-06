@@ -471,7 +471,9 @@ public class XCalDocument {
 	public void write(Writer writer, Map<String, String> outputProperties) throws TransformerException {
 		Transformer transformer;
 		try {
-			transformer = TransformerFactory.newInstance().newTransformer();
+			TransformerFactory factory = TransformerFactory.newInstance();
+			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+			transformer = eu.faircode.email.MessageHelper.jni_new_xml_transformer(factory);
 		} catch (TransformerConfigurationException e) {
 			//should never be thrown because we're not doing anything fancy with the configuration
 			throw new RuntimeException(e);

@@ -68,7 +68,7 @@ public class ColorPickerView extends View {
 				// set the color without changing the edit text preventing stack overflow
 				setColor(color, false);
 			} catch (Exception e) {
-				e.printStackTrace();
+				; //e.printStackTrace();
 			}
 		}
 
@@ -245,7 +245,7 @@ public class ColorPickerView extends View {
 						try {
 							listener.onColorSelected(selectedColor);
 						} catch (Exception e) {
-							e.printStackTrace();
+							; //e.printStackTrace();
 						}
 					}
 				}
@@ -265,7 +265,7 @@ public class ColorPickerView extends View {
 				try {
 					listener.onColorChanged(newColor);
 				} catch (Exception e) {
-					e.printStackTrace();
+					; //e.printStackTrace();
 				}
 			}
 		}

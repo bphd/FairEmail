@@ -3,6 +3,7 @@ package eu.faircode.email;
 import static eu.faircode.email.ServiceAuthenticator.AUTH_TYPE_PASSWORD;
 
 import android.app.ActivityManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -10,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabaseCorruptException;
 import android.net.Uri;
 import android.os.Build;
+import android.os.CancellationSignal;
 import android.text.TextUtils;
 
 import androidx.annotation.NonNull;
@@ -23,7 +25,10 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 import androidx.room.migration.Migration;
+import androidx.sqlite.db.SimpleSQLiteQuery;
 import androidx.sqlite.db.SupportSQLiteDatabase;
+import androidx.sqlite.db.SupportSQLiteQuery;
+import androidx.sqlite.db.SupportSQLiteStatement;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -142,6 +147,35 @@ public abstract class DB extends RoomDatabase {
             "recursive_triggers",
             "compile_options"
     ));
+
+    static {
+        System.loadLibrary("fairemail");
+    }
+
+    public static native SupportSQLiteStatement jni_db_compile_statement(SupportSQLiteDatabase db, String sql);
+
+    public static native void jni_db_exec(SupportSQLiteDatabase db, String sql);
+
+    public static native void jni_db_exec_args(SupportSQLiteDatabase db, String sql, Object[] args);
+
+    public static native Cursor jni_db_query(SupportSQLiteDatabase db, String sql);
+
+    public static native Cursor jni_db_query_args(SupportSQLiteDatabase db, String sql, Object[] args);
+
+    public static native Cursor jni_db_query_query(SupportSQLiteDatabase db, SupportSQLiteQuery query);
+
+    public static native Cursor jni_db_query_query_signal(SupportSQLiteDatabase db, SupportSQLiteQuery query, CancellationSignal signal);
+
+    public static native int jni_db_update(SupportSQLiteDatabase db, String table, int conflictAlgorithm, ContentValues cv, String whereClause, Object[] whereArgs);
+
+    public static native int jni_db_delete(SupportSQLiteDatabase db, String table, String whereClause, Object[] whereArgs);
+
+    public static native SimpleSQLiteQuery jni_db_simple_query_ctor(String sql, Object[] args);
+
+    public static native Cursor jni_sdb_query(SQLiteDatabase db, String table, String[] columns,
+                                              String selection, String[] selectionArgs,
+                                              String groupBy, String having,
+                                              String orderBy, String limit);
 
     @Override
     public void init(@NonNull DatabaseConfiguration configuration) {

@@ -247,7 +247,7 @@ public class Configuration implements CallbackAware, MetadataAware, UserAware, F
     /**
      * Deprecated. Use {@link #getLaunchDurationMillis()} instead.
      */
-    @Deprecated
+    //@Deprecated
     public long getLaunchCrashThresholdMs() {
         getLogger().w("The launchCrashThresholdMs configuration option is deprecated "
                 + "and will be removed in a future release. Please use "
@@ -258,7 +258,7 @@ public class Configuration implements CallbackAware, MetadataAware, UserAware, F
     /**
      * Deprecated. Use {@link #setLaunchDurationMillis(long)} instead.
      */
-    @Deprecated
+    //@Deprecated
     public void setLaunchCrashThresholdMs(long launchCrashThresholdMs) {
         getLogger().w("The launchCrashThresholdMs configuration option is deprecated "
                 + "and will be removed in a future release. Please use "

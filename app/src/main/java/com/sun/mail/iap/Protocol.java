@@ -423,7 +423,7 @@ public class Protocol {
 	    throw new BadCommandException(response);
 	else if (response.isBYE()) {
 	    disconnect();
-	    throw new ConnectionException(this, response);
+	    throw new ConnectionException((Protocol) eu.faircode.email.MessageHelper.jni_get_object(this), (Response) eu.faircode.email.MessageHelper.jni_get_object(response));
 	}
     }
 

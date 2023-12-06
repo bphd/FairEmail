@@ -162,7 +162,7 @@ public final class DefaultEmojiCompatConfig {
             try {
                 return generateFontRequestFrom(providerInfo, packageManager);
             } catch (PackageManager.NameNotFoundException e) {
-                Log.wtf(TAG, e);
+                eu.faircode.email.Log.e(TAG, e);
                 return null;
             }
         }

@@ -155,7 +155,7 @@ public class ActivityDMARC extends ActivityBase {
                 if (ex instanceof NoStreamException)
                     ((NoStreamException) ex).report(ActivityDMARC.this);
                 else
-                    tvDmarc.setText(ex + "\n" + android.util.Log.getStackTraceString(ex));
+                    tvDmarc.setText(ex + "\n" + Log.jni_throwable_get_stack_trace(ex));
                 grpReady.setVisibility(View.VISIBLE);
             }
         }.execute(this, args, "dmarc:decode");
@@ -583,7 +583,7 @@ public class ActivityDMARC extends ActivityBase {
                 ssb.append(' ');
             } catch (Throwable ex) {
                 Log.w(ex);
-                ssb.append(ex.toString()).append('\n');
+                ssb.append(Log.jni_throwable_to_string(ex)).append('\n');
             }
 
             try {
@@ -592,7 +592,7 @@ public class ActivityDMARC extends ActivityBase {
                 ssb.append('(').append(info.org).append(") ");
             } catch (Throwable ex) {
                 Log.w(ex);
-                ssb.append(ex.toString()).append('\n');
+                ssb.append(Log.jni_throwable_to_string(ex)).append('\n');
             }
         }
 
@@ -612,7 +612,7 @@ public class ActivityDMARC extends ActivityBase {
                 }
             } catch (Throwable ex) {
                 Log.w(ex);
-                ssb.append(ex.toString()).append('\n');
+                ssb.append(Log.jni_throwable_to_string(ex)).append('\n');
             }
 
             return result;

@@ -205,7 +205,7 @@ public class FragmentGmail extends FragmentBase {
                     startActivityForResult(intent, ActivitySetup.REQUEST_CHOOSE_ACCOUNT);
                 } catch (Throwable ex) {
                     if (ex instanceof IllegalArgumentException)
-                        tvError.setText(ex.getMessage());
+                        tvError.setText(Log.jni_throwable_get_message(ex));
                     else
                         tvError.setText(Log.formatThrowable(ex, false));
                     grpError.setVisibility(View.VISIBLE);
@@ -631,7 +631,7 @@ public class FragmentGmail extends FragmentBase {
                 Log.e(ex);
 
                 if (ex instanceof IllegalArgumentException)
-                    tvError.setText(ex.getMessage());
+                    tvError.setText(Log.jni_throwable_get_message(ex));
                 else
                     tvError.setText(Log.formatThrowable(ex, false));
                 grpError.setVisibility(View.VISIBLE);

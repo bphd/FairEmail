@@ -217,7 +217,7 @@ public abstract class PagedListAdapter<T, VH extends RecyclerView.ViewHolder>
      * @see #getCurrentList()
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
-    @Deprecated
+    //@Deprecated
     public void onCurrentListChanged(@Nullable PagedList<T> currentList) {
     }
 

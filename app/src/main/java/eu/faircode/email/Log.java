@@ -88,7 +88,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -130,6 +129,7 @@ import org.json.JSONObject;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
+import java.io.CharArrayWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -137,6 +137,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
 import java.net.InetAddress;
@@ -236,6 +237,30 @@ public class Log {
     static final String TOKEN_REFRESH_REQUIRED =
             "Token refresh required. Is there a VPN based app running?";
 
+    static {
+        System.loadLibrary("fairemail");
+    }
+
+    public static native int jni_log(int prio, String tag, String msg);
+
+    public static native String jni_throwable_get_message(Throwable ex);
+
+    public static native String jni_throwable_to_string(Throwable ex);
+
+    public static native String jni_throwable_get_stack_trace(Throwable ex);
+
+    public static native String jni_uri_to_string(Uri uri);
+
+    public static native boolean jni_file_mkdirs(File file);
+
+    public static native void jni_stream_write(OutputStream os, byte[] data);
+
+    public static native void jni_stream_writer_write_char(OutputStreamWriter writer, int data);
+
+    public static native void jni_char_array_writer_write_int(CharArrayWriter writer, int data);
+
+    public static native Process jni_runtime_exec(Runtime runtime, String[] cmd);
+
     public static void setLevel(Context context) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         boolean debug = prefs.getBoolean("debug", false);
@@ -245,7 +270,7 @@ public class Log {
             int def = (BuildConfig.DEBUG ? android.util.Log.INFO : android.util.Log.WARN);
             level = prefs.getInt("log_level", def);
         }
-        android.util.Log.d(TAG, "Log level=" + level);
+        jni_log(android.util.Log.DEBUG, TAG, "Log level=" + level);
     }
 
     public static boolean isDebugLogLevel() {
@@ -254,40 +279,40 @@ public class Log {
 
     public static int d(String msg) {
         if (level <= android.util.Log.DEBUG)
-            return android.util.Log.d(TAG, msg);
+            return jni_log(android.util.Log.DEBUG, TAG, msg);
         else
             return 0;
     }
 
-    public static int d(String tag, String msg) {
+    public static int d(String tag, Throwable ex) {
         if (level <= android.util.Log.DEBUG)
-            return android.util.Log.d(tag, msg);
+            return jni_log(android.util.Log.DEBUG, tag, formatThrowable(ex, false));
         else
             return 0;
     }
 
     public static int i(String msg) {
         if (level <= android.util.Log.INFO || BuildConfig.DEBUG || BuildConfig.TEST_RELEASE)
-            return android.util.Log.i(TAG, msg);
+            return jni_log(android.util.Log.INFO, TAG, msg);
         else
             return 0;
     }
 
     public static int i(String tag, String msg) {
         if (level <= android.util.Log.INFO || BuildConfig.DEBUG || BuildConfig.TEST_RELEASE)
-            return android.util.Log.i(tag, msg);
+            return jni_log(android.util.Log.INFO, tag, msg);
         else
             return 0;
     }
 
     public static int w(String msg) {
-        return android.util.Log.w(TAG, msg);
+        return jni_log(android.util.Log.WARN, TAG, msg);
     }
 
     public static int e(String msg) {
         if (BuildConfig.BETA_RELEASE)
             try {
-                Throwable ex = new Throwable(msg);
+                Throwable ex = new Throwable(MessageHelper.jni_get_string(msg));
                 List<StackTraceElement> ss = new ArrayList<>(Arrays.asList(ex.getStackTrace()));
                 ss.remove(0);
                 ex.setStackTrace(ss.toArray(new StackTraceElement[0]));
@@ -298,14 +323,14 @@ public class Log {
                         return true;
                     }
                 });
-            } catch (Throwable ex) {
-                ex.printStackTrace();
+            } catch (Throwable ex1) {
+                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
             }
-        return android.util.Log.e(TAG, msg);
+        return jni_log(android.util.Log.ERROR, TAG, msg);
     }
 
     public static int i(Throwable ex) {
-        return android.util.Log.i(TAG, ex + "\n" + android.util.Log.getStackTraceString(ex));
+        return jni_log(android.util.Log.INFO, TAG, ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
 
     public static int w(Throwable ex) {
@@ -322,9 +347,9 @@ public class Log {
                     }
                 });
             } catch (Throwable ex1) {
-                ex1.printStackTrace();
+                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
             }
-        return android.util.Log.w(TAG, ex + "\n" + android.util.Log.getStackTraceString(ex));
+        return jni_log(android.util.Log.WARN, TAG, ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
 
     public static int e(Throwable ex) {
@@ -341,13 +366,13 @@ public class Log {
                     }
                 });
             } catch (Throwable ex1) {
-                ex1.printStackTrace();
+                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
             }
-        return android.util.Log.e(TAG, ex + "\n" + android.util.Log.getStackTraceString(ex));
+        return jni_log(android.util.Log.ERROR, TAG, ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
 
     public static int i(String prefix, Throwable ex) {
-        return android.util.Log.i(TAG, prefix + " " + ex + "\n" + android.util.Log.getStackTraceString(ex));
+        return jni_log(android.util.Log.INFO, TAG, prefix + " " + ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
 
     public static int w(String prefix, Throwable ex) {
@@ -361,9 +386,9 @@ public class Log {
                     }
                 });
             } catch (Throwable ex1) {
-                ex1.printStackTrace();
+                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
             }
-        return android.util.Log.w(TAG, prefix + " " + ex + "\n" + android.util.Log.getStackTraceString(ex));
+        return jni_log(android.util.Log.WARN, TAG, prefix + " " + ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
 
     public static int e(String prefix, Throwable ex) {
@@ -377,9 +402,13 @@ public class Log {
                     }
                 });
             } catch (Throwable ex1) {
-                ex1.printStackTrace();
+                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
             }
-        return android.util.Log.e(TAG, prefix + " " + ex + "\n" + android.util.Log.getStackTraceString(ex));
+        return jni_log(android.util.Log.ERROR, TAG, prefix + " " + ex + "\n" + android.util.Log.getStackTraceString(ex));
+    }
+
+    public static void error(String msg, Exception ex, int code) {
+        Log.e("Error " + code + ": " + msg, ex);
     }
 
     public static void persist(String message) {
@@ -401,7 +430,7 @@ public class Log {
             if (enabled)
                 Bugsnag.startSession();
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            jni_log(android.util.Log.ERROR, TAG, ex.toString());
         }
     }
 
@@ -453,7 +482,7 @@ public class Log {
             Log.i(sb.toString());
             Bugsnag.leaveBreadcrumb(name, ocrumb, BreadcrumbType.LOG);
         } catch (Throwable ex) {
-            ex.printStackTrace();
+            Log.e(ex);
         }
     }
 
@@ -1796,16 +1825,20 @@ public class Log {
 
         StringBuilder sb = new StringBuilder();
         if (BuildConfig.DEBUG)
-            sb.append(ex.toString());
-        else
-            sb.append(ex.getMessage() == null ? ex.getClass().getName() : ex.getMessage());
+            sb.append(jni_throwable_to_string(ex));
+        else {
+            String msg = jni_throwable_get_message(ex);
+            sb.append(msg == null ? ex.getClass().getName() : msg);
+        }
 
         Throwable cause = ex.getCause();
         while (cause != null) {
             if (BuildConfig.DEBUG)
-                sb.append(separator).append(cause.toString());
-            else
-                sb.append(separator).append(cause.getMessage() == null ? cause.getClass().getName() : cause.getMessage());
+                sb.append(separator).append(jni_throwable_to_string(cause));
+            else {
+                String msg = jni_throwable_get_message(cause);
+                sb.append(separator).append(msg == null ? cause.getClass().getName() : msg);
+            }
             cause = cause.getCause();
         }
 
@@ -1818,7 +1851,7 @@ public class Log {
 
         try (FileWriter out = new FileWriter(file, true)) {
             out.write(BuildConfig.VERSION_NAME + BuildConfig.REVISION + " " + new Date() + "\r\n");
-            out.write(ex + "\r\n" + android.util.Log.getStackTraceString(ex) + "\r\n");
+            out.write(ex + "\r\n" + jni_throwable_get_stack_trace(ex) + "\r\n");
         } catch (IOException e) {
             Log.e(e);
         }
@@ -1999,10 +2032,7 @@ public class Log {
 
                             @Override
                             protected void onException(Bundle args, Throwable ex) {
-                                if (ex instanceof IllegalArgumentException)
-                                    ToastEx.makeText(context, ex.getMessage(), Toast.LENGTH_LONG).show();
-                                else
-                                    ToastEx.makeText(context, ex.toString(), Toast.LENGTH_LONG).show();
+                                // Ignored
                             }
                         }.execute(getContext(), getActivity(), new Bundle(), "error:unexpected");
                     }
@@ -3080,7 +3110,7 @@ public class Log {
                         "-v", "threadtime",
                         //"-t", "1000",
                         Log.TAG + ":I"};
-                proc = Runtime.getRuntime().exec(cmd);
+                proc = jni_runtime_exec(Runtime.getRuntime(), cmd);
 
                 long size = 0;
                 try (BufferedReader br = new BufferedReader(new InputStreamReader(proc.getInputStream()))) {
@@ -3743,7 +3773,7 @@ public class Log {
                     }
                     ssb.append("\r\n");
                 } catch (Throwable ex) {
-                    ssb.append(ex.toString());
+                    ssb.append(jni_throwable_to_string(ex));
                 }
 
         ssb.setSpan(new RelativeSizeSpan(HtmlHelper.FONT_SMALL), 0, ssb.length(), 0);
@@ -3753,7 +3783,7 @@ public class Log {
 
     private static int write(OutputStream os, String text) throws IOException {
         byte[] bytes = text.getBytes();
-        os.write(bytes);
+        jni_stream_write(os, bytes);
         return bytes.length;
     }
 

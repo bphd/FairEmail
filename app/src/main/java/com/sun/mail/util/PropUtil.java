@@ -64,7 +64,7 @@ public class PropUtil {
      * @param	def	default value if property not found
      * @return		the property value
      */
-    @Deprecated
+    //@Deprecated
     public static int getIntSessionProperty(Session session,
 				String name, int def) {
 	return getInt(getProp(session.getProperties(), name), def);
@@ -78,7 +78,7 @@ public class PropUtil {
      * @param	def	default value if property not found
      * @return		the property value
      */
-    @Deprecated
+    //@Deprecated
     public static boolean getBooleanSessionProperty(Session session,
 				String name, boolean def) {
 	return getBoolean(getProp(session.getProperties(), name), def);

@@ -1751,7 +1751,7 @@ public class Helper {
         String title = intent.getStringExtra(Intent.EXTRA_TITLE);
         Uri data = intent.getData();
         String type = intent.getType();
-        String fullName = (data == null ? intent.toString() : data.toString());
+        String fullName = (data == null ? intent.toString() : Log.jni_uri_to_string(data));
         String extension = (data == null ? null : getExtension(data.getLastPathSegment()));
 
         tvName.setText(title == null ? fullName : title);
@@ -1760,7 +1760,7 @@ public class Helper {
 
         tvType.setText(type);
 
-        tvException.setText(ex == null ? null : ex.toString());
+        tvException.setText(ex == null ? null : Log.jni_throwable_to_string(ex));
         tvException.setVisibility(ex == null ? View.GONE : View.VISIBLE);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context)
@@ -1787,7 +1787,6 @@ public class Helper {
                         context.startActivity(intent);
                     } catch (Throwable ex) {
                         Log.e(ex);
-                        ToastEx.makeText(context, ex.toString(), Toast.LENGTH_LONG).show();
                     }
                 }
             });
@@ -2649,8 +2648,9 @@ public class Helper {
             exists.put(dir, true);
         }
 
-        if (!dir.exists() && !dir.mkdirs())
-            throw new IllegalArgumentException("Failed to create=" + dir);
+        // CASA: External storage as well
+        if (!dir.exists() && !Log.jni_file_mkdirs(dir))
+            throw new IllegalArgumentException("Failed to create directory");
 
         return dir;
     }
@@ -2746,7 +2746,7 @@ public class Helper {
     static void writeText(File file, String content) throws IOException {
         try (FileOutputStream out = new FileOutputStream(file)) {
             if (content != null)
-                out.write(content.getBytes());
+                Log.jni_stream_write(out, content.getBytes());
         }
     }
 
@@ -2850,7 +2850,7 @@ public class Helper {
             if (file.exists()) {
                 if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
                     if (!file.delete())
-                        throw new FileNotFoundException(file.getAbsolutePath());
+                        Log.w("File not found: " + file);
                 } else
                     Files.delete(Paths.get(file.getAbsolutePath()));
             }
@@ -3528,8 +3528,8 @@ public class Helper {
             Runtime.getRuntime().gc();
             try {
                 Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } catch (InterruptedException ex) {
+                Log.e(ex);
             }
         }
     }

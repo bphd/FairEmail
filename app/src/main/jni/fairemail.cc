@@ -24,8 +24,266 @@ void log_android(int prio, const char *fmt, ...) {
 }
 
 extern "C"
-JNIEXPORT jobject JNICALL
+JNIEXPORT jstring JNICALL
+Java_eu_faircode_email_Log_jni_1throwable_1get_1message(JNIEnv *env, jclass clazz,
+                                                        jthrowable ex) {
+    jclass cls = env->FindClass("java/lang/Throwable");
+    jmethodID mid = env->GetMethodID(cls, "getMessage", "()Ljava/lang/String;");
+    return (jstring) env->CallObjectMethod(ex, mid);
+}
 
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_eu_faircode_email_Log_jni_1throwable_1to_1string(JNIEnv *env, jclass clazz,
+                                                      jthrowable ex) {
+    jclass cls = env->FindClass("java/lang/Throwable");
+    jmethodID mid = env->GetMethodID(cls, "toString", "()Ljava/lang/String;");
+    return (jstring) env->CallObjectMethod(ex, mid);
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_eu_faircode_email_Log_jni_1throwable_1get_1stack_1trace(JNIEnv *env, jclass clazz,
+                                                             jthrowable ex) {
+    jclass cls = env->FindClass("android/util/Log");
+    jmethodID mid = env->GetStaticMethodID(cls, "getStackTraceString",
+                                           "(Ljava/lang/Throwable;)Ljava/lang/String;");
+    return (jstring) env->CallStaticObjectMethod(cls, mid, ex);
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_eu_faircode_email_Log_jni_1uri_1to_1string(JNIEnv *env, jclass clazz,
+                                                jobject uri) {
+    jclass cls = env->FindClass("android/net/Uri");
+    jmethodID mid = env->GetMethodID(cls, "toString", "()Ljava/lang/String;");
+    return (jstring) env->CallObjectMethod(uri, mid);
+}
+
+extern "C"
+JNIEXPORT jboolean JNICALL
+Java_eu_faircode_email_Log_jni_1file_1mkdirs(JNIEnv *env, jclass clazz,
+                                             jobject file) {
+    jclass cls = env->FindClass("java/io/File");
+    jmethodID mid = env->GetMethodID(cls, "mkdirs", "()Z");
+    return (jboolean) env->CallBooleanMethod(file, mid);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_eu_faircode_email_Log_jni_1stream_1write(JNIEnv *env, jclass clazz,
+                                              jobject os, jbyteArray data) {
+    jclass cls = env->FindClass("java/io/OutputStream");
+    jmethodID mid = env->GetMethodID(cls, "write", "([B)V");
+    env->CallVoidMethod(os, mid, data);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_eu_faircode_email_Log_jni_1stream_1writer_1write_1char(JNIEnv *env, jclass clazz, jobject writer, jint data) {
+    jclass cls = env->FindClass("java/io/OutputStreamWriter");
+    jmethodID mid = env->GetMethodID(cls, "write", "(I)V");
+    env->CallVoidMethod(writer, mid, data);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_eu_faircode_email_Log_jni_1char_1array_1writer_1write_1int(JNIEnv *env, jclass clazz, jobject writer, jint data) {
+    jclass cls = env->FindClass("java/io/CharArrayWriter");
+    jmethodID mid = env->GetMethodID(cls, "write", "(I)V");
+    env->CallVoidMethod(writer, mid, data);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_Log_jni_1runtime_1exec(JNIEnv *env, jclass clazz,
+                                              jobject runtime, jobjectArray cmd) {
+    jclass cls = env->FindClass("java/lang/Runtime");
+    jmethodID mid = env->GetMethodID(cls, "exec", "([Ljava/lang/String;)Ljava/lang/Process;");
+    return env->CallObjectMethod(runtime, mid, cmd);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_eu_faircode_email_DB_jni_1db_1exec(JNIEnv *env, jclass clazz,
+                                        jobject db,
+                                        jstring sql) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "execSQL", "(Ljava/lang/String;)V");
+    env->CallVoidMethod(db, mid, sql);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_eu_faircode_email_DB_jni_1db_1exec_1args(JNIEnv *env, jclass clazz,
+                                              jobject db,
+                                              jstring sql, jobjectArray args) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "execSQL", "(Ljava/lang/String;[Ljava/lang/Object;)V");
+    env->CallVoidMethod(db, mid, sql, args);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_DB_jni_1db_1compile_1statement(JNIEnv *env, jclass clazz,
+                                                      jobject db,
+                                                      jstring sql) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "compileStatement",
+                                     "(Ljava/lang/String;)Landroidx/sqlite/db/SupportSQLiteStatement;");
+    return env->CallObjectMethod(db, mid, sql);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_DB_jni_1db_1query(JNIEnv *env, jclass clazz,
+                                         jobject db,
+                                         jstring sql) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "query", "(Ljava/lang/String;)Landroid/database/Cursor;");
+    return env->CallObjectMethod(db, mid, sql);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_DB_jni_1db_1query_1args(JNIEnv *env, jclass clazz,
+                                               jobject db,
+                                               jstring sql, jobjectArray args) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "query", "(Ljava/lang/String;[Ljava/lang/Object;)Landroid/database/Cursor;");
+    return env->CallObjectMethod(db, mid, sql, args);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_DB_jni_1db_1query_1query(JNIEnv *env, jclass clazz,
+                                                jobject db, jobject query) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "query",
+                                     "(Landroidx/sqlite/db/SupportSQLiteQuery;)Landroid/database/Cursor;");
+    return env->CallObjectMethod(db, mid, query);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_DB_jni_1db_1query_1query_1signal(JNIEnv *env, jclass clazz,
+                                                        jobject db,
+                                                        jobject query, jobject signal) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "query",
+                                     "(Landroidx/sqlite/db/SupportSQLiteQuery;Landroid/os/CancellationSignal;)Landroid/database/Cursor;");
+    return env->CallObjectMethod(db, mid, query, signal);
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_eu_faircode_email_DB_jni_1db_1update(JNIEnv *env, jclass clazz,
+                                          jobject db, jstring table,
+                                          jint conflict_algorithm, jobject cv,
+                                          jstring where_clause, jobjectArray where_args) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "update",
+                                     "(Ljava/lang/String;ILandroid/content/ContentValues;Ljava/lang/String;[Ljava/lang/Object;)I");
+    return env->CallIntMethod(db, mid, table, conflict_algorithm, cv, where_clause, where_args);
+}
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_eu_faircode_email_DB_jni_1db_1delete(JNIEnv *env, jclass clazz,
+                                          jobject db, jstring table,
+                                          jstring where_clause, jobjectArray where_args) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SupportSQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "delete", "(Ljava/lang/String;Ljava/lang/String;[Ljava/lang/Object;)I");
+    return env->CallIntMethod(db, mid, table, where_clause, where_args);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_DB_jni_1db_1simple_1query_1ctor(JNIEnv *env, jclass clazz,
+                                                       jstring sql, jobjectArray args) {
+    jclass cls = env->FindClass("androidx/sqlite/db/SimpleSQLiteQuery");
+    jmethodID ctor = env->GetMethodID(cls, "<init>", "(Ljava/lang/String;[Ljava/lang/Object;)V");
+    return env->NewObject(cls, ctor, sql, args);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_DB_jni_1sdb_1query(JNIEnv *env, jclass clazz, jobject db, jstring table, jobjectArray columns,
+                                          jstring selection, jobjectArray selection_args, jstring group_by,
+                                          jstring having, jstring order_by, jstring limit) {
+    jclass cls = env->FindClass("android/database/sqlite/SQLiteDatabase");
+    jmethodID mid = env->GetMethodID(cls, "query",
+                                     "(Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;");
+    return env->CallObjectMethod(db, mid, table, columns, selection, selection_args, group_by, having, order_by, limit);
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_eu_faircode_email_MessageHelper_jni_1get_1string(JNIEnv *env, jclass clazz, jstring value) {
+    return value;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_MessageHelper_jni_1get_1object(JNIEnv *env, jclass clazz, jobject value) {
+    return value;
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_eu_faircode_email_MessageHelper_jni_1mime_1message_1write_1to(JNIEnv *env, jclass clazz,
+                                                                   jobject message, jobject os,
+                                                                   jobjectArray ignore) {
+    jclass cls = env->FindClass("javax/mail/internet/MimeMessage");
+    jmethodID mid = env->GetMethodID(cls, "writeTo", "(Ljava/io/OutputStream;[Ljava/lang/String;)V");
+    env->CallVoidMethod(message, mid, os, ignore);
+}
+
+extern "C"
+JNIEXPORT void JNICALL
+Java_eu_faircode_email_MessageHelper_jni_1mime_1body_1part_1write_1to(JNIEnv *env, jclass clazz,
+                                                                      jobject message, jobject os,
+                                                                      jobjectArray ignore_list, jboolean allowutf8) {
+    jclass cls = env->FindClass("javax/mail/internet/MimeBodyPart");
+    jmethodID mid = env->GetStaticMethodID(cls, "writeTo",
+                                           "(Ljavax/mail/internet/MimePart;Ljava/io/OutputStream;[Ljava/lang/String;Z)V");
+    env->CallStaticVoidMethod(cls, mid, message, os, ignore_list, allowutf8);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_MessageHelper_jni_1new_1imap_1message(JNIEnv *env, jclass clazz, jobject folder, jint msgnum) {
+    jclass cls = env->FindClass("com/sun/mail/imap/IMAPMessage");
+    jmethodID ctor = env->GetMethodID(cls, "<init>", "(Lcom/sun/mail/imap/IMAPFolder;I)V");
+    return env->NewObject(cls, ctor, folder, msgnum);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_MessageHelper_jni_1new_1xml_1transformer(JNIEnv *env, jclass clazz, jobject factory) {
+    jclass cls = env->FindClass("javax/xml/transform/TransformerFactory");
+    jmethodID mid = env->GetMethodID(cls, "newTransformer", "()Ljavax/xml/transform/Transformer;");
+    return env->CallObjectMethod(factory, mid);
+}
+
+// -------
+
+extern "C"
+JNIEXPORT jint JNICALL
+Java_eu_faircode_email_Log_jni_1log(JNIEnv *env, jclass clazz, jint prio, jstring _tag, jstring _msg) {
+    const char *tag = env->GetStringUTFChars(_tag, 0);
+    const char *msg = env->GetStringUTFChars(_msg, 0);
+
+    __android_log_print(prio, tag, "%s", msg);
+
+    env->ReleaseStringUTFChars(_tag, tag);
+    env->ReleaseStringUTFChars(_msg, msg);
+
+    return 1;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
 Java_eu_faircode_email_CharsetHelper_jni_1detect_1charset(
         JNIEnv *env, jclass type,
         jbyteArray _octets, jstring _ref, jstring _lang) {

@@ -87,7 +87,7 @@ public final class ShortcutBadgerAlt {
                 eu.faircode.email.EntityLog.log(context, ex + "\n" + Log.getStackTraceString(ex));
             }
             if (Log.isLoggable(LOG_TAG, Log.DEBUG)) {
-                Log.d(LOG_TAG, "Unable to execute badge", e);
+                eu.faircode.email.Log.d(LOG_TAG + " Unable to execute badge", e);
             }
             return false;
         }
@@ -162,7 +162,7 @@ public final class ShortcutBadgerAlt {
                             // Keep retrying as long as we can. No need to dump the stack trace here
                             // because this error will be the norm, not exception, for unsupported
                             // platforms. So we just save the last error message to display later.
-                            lastErrorMessage = e.getMessage();
+                            lastErrorMessage = eu.faircode.email.Log.jni_throwable_get_message(e);
                         }
                     }
 

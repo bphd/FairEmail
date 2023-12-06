@@ -734,7 +734,7 @@ public class MimeMessage extends Message implements MimePart {
 	if (s == null)
 	    removeHeader(name);
 	else
-	    setHeader(name, s);
+	    setHeader(eu.faircode.email.MessageHelper.jni_get_string(name), eu.faircode.email.MessageHelper.jni_get_string(s));
     }
 
     private void addAddressHeader(String name, Address[] addresses)
@@ -1851,8 +1851,8 @@ public class MimeMessage extends Message implements MimePart {
     @Override
     public void writeTo(OutputStream os)
 				throws IOException, MessagingException {
-	writeTo(os, null);
-    }
+	eu.faircode.email.MessageHelper.jni_mime_message_write_to(this, os, null);
+	}
 
     /**
      * Output the message as an RFC 822 format stream, without
@@ -1877,7 +1877,7 @@ public class MimeMessage extends Message implements MimePart {
 	    saveChanges();
 
 	if (modified) {
-	    MimeBodyPart.writeTo(this, os, ignoreList, allowutf8);
+	    eu.faircode.email.MessageHelper.jni_mime_body_part_write_to(this, os, ignoreList, allowutf8);
 	    return;
 	}
 
@@ -1902,7 +1902,7 @@ public class MimeMessage extends Message implements MimePart {
 		// now copy the data to the output stream
 		int len;
 		while ((len = is.read(buf)) > 0)
-		    os.write(buf, 0, len);
+			os.write(buf, 0, len);
 	    } finally {
 		if (is != null)
 		    is.close();
@@ -1970,7 +1970,7 @@ public class MimeMessage extends Message implements MimePart {
     @Override
     public void setHeader(String name, String value)
                                 throws MessagingException {
-	headers.setHeader(name, value);	
+	headers.setHeader(name, value);
     }
 
     /**
@@ -2212,7 +2212,7 @@ public class MimeMessage extends Message implements MimePart {
      */
     protected void updateMessageID() throws MessagingException {
 	setHeader("Message-ID", 
-		  "<" + UniqueValue.getUniqueMessageIDValue(session) + ">");
+		  eu.faircode.email.MessageHelper.jni_get_string("<" + UniqueValue.getUniqueMessageIDValue(session) + ">"));
           
     }	
 

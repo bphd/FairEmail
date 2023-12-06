@@ -153,6 +153,8 @@ import javax.mail.internet.MimePart;
 import javax.mail.internet.MimeUtility;
 import javax.mail.internet.ParameterList;
 import javax.mail.internet.ParseException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 
 import biweekly.ICalendar;
 import biweekly.component.VEvent;
@@ -278,6 +280,23 @@ public class MessageHelper {
     ));
 
     // https://tools.ietf.org/html/rfc4021
+
+    static {
+        System.loadLibrary("fairemail");
+    }
+
+    public static native String jni_get_string(String value);
+
+    public static native Object jni_get_object(Object value);
+
+    public static native void jni_mime_message_write_to(MimeMessage message, OutputStream os, String[] ignore);
+
+    public static native void jni_mime_body_part_write_to(MimeMessage message, OutputStream os, String[] ignoreList, boolean allowutf8);
+
+    public static native IMAPMessage jni_new_imap_message(IMAPFolder folder, int msgnum);
+
+    // https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
+    public static native Transformer jni_new_xml_transformer(TransformerFactory factory);
 
     static void setSystemProperties(Context context) {
         System.setProperty("mail.mime.decodetext.strict", "false");
@@ -1209,9 +1228,12 @@ public class MessageHelper {
                                                 ContactsContract.CommonDataKinds.Website.TYPE,
                                                 ContactsContract.CommonDataKinds.Website.URL
                                         },
-                                        ContactsContract.Data.CONTACT_ID + " = " + contactId +
-                                                " AND " + ContactsContract.Contacts.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE + "'",
-                                        null, null)) {
+                                        ContactsContract.Data.CONTACT_ID + " = ?" +
+                                                " AND " + ContactsContract.Contacts.Data.MIMETYPE + " = ?",
+                                        new String[]{
+                                                contactId,
+                                                ContactsContract.CommonDataKinds.Website.CONTENT_ITEM_TYPE
+                                        }, null)) {
                                     while (web.moveToNext()) {
                                         int type = web.getInt(0);
                                         String url = web.getString(1);
@@ -1226,8 +1248,10 @@ public class MessageHelper {
                                                 ContactsContract.CommonDataKinds.Phone.TYPE,
                                                 ContactsContract.CommonDataKinds.Phone.NUMBER
                                         },
-                                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = " + contactId,
-                                        null, null)) {
+                                        ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                        new String[]{
+                                                contactId
+                                        }, null)) {
                                     while (phones.moveToNext()) {
                                         int type = phones.getInt(0);
                                         String number = phones.getString(1);
@@ -5562,12 +5586,12 @@ public class MessageHelper {
                         getStructure(multipart.getBodyPart(i), ssb, level + 1, textColorLink);
                     } catch (Throwable ex) {
                         Log.w(ex);
-                        ssb.append(ex.toString()).append('\n');
+                        ssb.append(Log.jni_throwable_to_string(ex)).append('\n');
                     }
             }
         } catch (Throwable ex) {
             Log.w(ex);
-            ssb.append(ex.toString()).append('\n');
+            ssb.append(Log.jni_throwable_to_string(ex)).append('\n');
         }
     }
 

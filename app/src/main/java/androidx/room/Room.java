@@ -108,7 +108,7 @@ public class Room {
     }
 
     /** @deprecated This type should not be instantiated as it contains only static methods. */
-    @Deprecated
+    //@Deprecated
     @SuppressWarnings("PrivateConstructorForUtilityClass")
     public Room() {
     }

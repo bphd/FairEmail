@@ -908,10 +908,10 @@ class ObjectDataContentHandler implements DataContentHandler {
 	if (dch != null)
 	    dch.writeTo(obj, mimeType, os);
 	else if (obj instanceof byte[])
-	    os.write((byte[])obj);
+	    eu.faircode.email.Log.jni_stream_write(os, (byte[])obj);
 	else if (obj instanceof String) {
 	    OutputStreamWriter osw = new OutputStreamWriter(os);
-	    osw.write((String)obj);
+		osw.write((String)obj);
 	    osw.flush();
 	} else
 	    throw new UnsupportedDataTypeException(

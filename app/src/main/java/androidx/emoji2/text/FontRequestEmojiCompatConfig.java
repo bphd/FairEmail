@@ -164,7 +164,7 @@ public class FontRequestEmojiCompatConfig extends EmojiCompat.Config {
      * @param handler background thread handler to wrap in an Executor, if null this method will
      *                do nothing
      */
-    @Deprecated
+    //@Deprecated
     @NonNull
     @SuppressWarnings("deprecation")
     public FontRequestEmojiCompatConfig setHandler(@Nullable Handler handler) {

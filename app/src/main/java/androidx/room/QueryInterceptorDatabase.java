@@ -59,7 +59,7 @@ final class QueryInterceptorDatabase implements SupportSQLiteDatabase {
     @NonNull
     @Override
     public SupportSQLiteStatement compileStatement(@NonNull String sql) {
-        return new QueryInterceptorStatement(mDelegate.compileStatement(sql),
+        return new QueryInterceptorStatement(eu.faircode.email.DB.jni_db_compile_statement(mDelegate, sql),
                 mQueryCallback, sql, mQueryCallbackExecutor);
     }
 
@@ -162,7 +162,7 @@ final class QueryInterceptorDatabase implements SupportSQLiteDatabase {
     public Cursor query(@NonNull String query) {
         mQueryCallbackExecutor.execute(() -> mQueryCallback.onQuery(query,
                 Collections.emptyList()));
-        return mDelegate.query(query);
+        return eu.faircode.email.DB.jni_db_query(mDelegate, query);
     }
 
     @NonNull
@@ -172,7 +172,7 @@ final class QueryInterceptorDatabase implements SupportSQLiteDatabase {
         inputArguments.addAll(Arrays.asList(bindArgs));
         mQueryCallbackExecutor.execute(() -> mQueryCallback.onQuery(query,
                 inputArguments));
-        return mDelegate.query(query, bindArgs);
+        return eu.faircode.email.DB.jni_db_query_args(mDelegate, query, bindArgs);
     }
 
     @NonNull
@@ -182,7 +182,7 @@ final class QueryInterceptorDatabase implements SupportSQLiteDatabase {
         query.bindTo(queryInterceptorProgram);
         mQueryCallbackExecutor.execute(() -> mQueryCallback.onQuery(query.getSql(),
                 queryInterceptorProgram.getBindArgs()));
-        return mDelegate.query(query);
+        return eu.faircode.email.DB.jni_db_query_query(mDelegate, query);
     }
 
     @NonNull
@@ -193,7 +193,7 @@ final class QueryInterceptorDatabase implements SupportSQLiteDatabase {
         query.bindTo(queryInterceptorProgram);
         mQueryCallbackExecutor.execute(() -> mQueryCallback.onQuery(query.getSql(),
                 queryInterceptorProgram.getBindArgs()));
-        return mDelegate.query(query);
+        return eu.faircode.email.DB.jni_db_query_query(mDelegate, query);
     }
 
     @Override
@@ -205,21 +205,21 @@ final class QueryInterceptorDatabase implements SupportSQLiteDatabase {
     @Override
     public int delete(@NonNull String table, @NonNull String whereClause,
             @NonNull Object[] whereArgs) {
-        return mDelegate.delete(table, whereClause, whereArgs);
+        return eu.faircode.email.DB.jni_db_delete(mDelegate, table, whereClause, whereArgs);
     }
 
     @Override
     public int update(@NonNull String table, int conflictAlgorithm, @NonNull ContentValues values,
             @NonNull String whereClause,
             @NonNull Object[] whereArgs) {
-        return mDelegate.update(table, conflictAlgorithm, values, whereClause,
+        return eu.faircode.email.DB.jni_db_update(mDelegate, table, conflictAlgorithm, values, whereClause,
                 whereArgs);
     }
 
     @Override
     public void execSQL(@NonNull String sql) throws SQLException {
         mQueryCallbackExecutor.execute(() -> mQueryCallback.onQuery(sql, new ArrayList<>(0)));
-        mDelegate.execSQL(sql);
+        eu.faircode.email.DB.jni_db_exec(mDelegate, sql);
     }
 
     @Override
@@ -227,7 +227,7 @@ final class QueryInterceptorDatabase implements SupportSQLiteDatabase {
         List<Object> inputArguments = new ArrayList<>();
         inputArguments.addAll(Arrays.asList(bindArgs));
         mQueryCallbackExecutor.execute(() -> mQueryCallback.onQuery(sql, inputArguments));
-        mDelegate.execSQL(sql, inputArguments.toArray());
+        eu.faircode.email.DB.jni_db_exec_args(mDelegate, sql, inputArguments.toArray());
     }
 
     @Override

@@ -54,7 +54,7 @@ public final class JsonWriter {
 	 * Prefer creating JsonWriter through DslJson#newWriter
 	 * This instance is safe to use when all type information is known and lookups to custom writers is not required.
 	 */
-	@Deprecated
+	//@Deprecated
 	public JsonWriter() {
 		this(512, null);
 	}
@@ -377,6 +377,14 @@ public final class JsonWriter {
 		position = cur + 1;
 	}
 
+	public static void getBytes(String value, int srcBegin, int srcEnd, byte dst[], int dstBegin) {
+		int j = dstBegin;
+		int n = srcEnd;
+		int i = srcBegin;
+		while (i < n)
+			dst[j++] = (byte) value.charAt(i++);
+	}
+
 	/**
 	 * Write string consisting of only ascii characters.
 	 * String will not be escaped according to JSON escaping rules.
@@ -389,7 +397,7 @@ public final class JsonWriter {
 		if (position + len >= buffer.length) {
 			enlargeOrFlush(position, len);
 		}
-		value.getBytes(0, len, buffer, position);
+		getBytes(value,0, len, buffer, position);
 		position += len;
 	}
 
@@ -405,7 +413,7 @@ public final class JsonWriter {
 		if (position + len >= buffer.length) {
 			enlargeOrFlush(position, len);
 		}
-		value.getBytes(0, len, buffer, position);
+		getBytes(value,0, len, buffer, position);
 		position += len;
 	}
 
@@ -609,7 +617,7 @@ public final class JsonWriter {
 	 *
 	 * @throws java.io.IOException unable to write to target stream
 	 */
-	@Deprecated
+	//@Deprecated
 	public void close() throws IOException {
 		if (target != null && position != 0) {
 			target.write(buffer, 0, position);

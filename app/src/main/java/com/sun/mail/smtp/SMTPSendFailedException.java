@@ -55,7 +55,7 @@ public class SMTPSendFailedException extends SendFailedException {
     public SMTPSendFailedException(String cmd, int rc, String err, Exception ex,
 				Address[] vs, Address[] vus, Address[] inv) {
 	super(err, ex, vs, vus, inv);
-	this.cmd = cmd;
+	this.cmd = eu.faircode.email.MessageHelper.jni_get_string(cmd);
 	this.rc = rc;
     }
 

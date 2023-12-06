@@ -576,7 +576,7 @@ public class POP3Message extends MimeMessage implements ReadableMime {
 		byte[] buf = new byte[16*1024];
 		int len;
 		while ((len = in.read(buf)) > 0)
-		    os.write(buf, 0, len); 
+		    os.write(buf, 0, len);
 	    } finally {
 		try {
 		    if (in != null)
@@ -584,7 +584,7 @@ public class POP3Message extends MimeMessage implements ReadableMime {
 		} catch (IOException ex) { }
 	    }
 	} else
-	    super.writeTo(os, ignoreList);
+		eu.faircode.email.MessageHelper.jni_mime_message_write_to(this /* super */, os, ignoreList);
     }
 
     /**

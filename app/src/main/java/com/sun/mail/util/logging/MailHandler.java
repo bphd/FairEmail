@@ -1589,10 +1589,10 @@ public class MailHandler extends Handler {
     protected void reportError(String msg, Exception ex, int code) {
         try {
             if (msg != null) {
-                errorManager.error(Level.SEVERE.getName()
+                eu.faircode.email.Log.error(Level.SEVERE.getName()
                         .concat(": ").concat(msg), ex, code);
             } else {
-                errorManager.error(null, ex, code);
+                eu.faircode.email.Log.error(null, ex, code);
             }
         } catch (RuntimeException | LinkageError GLASSFISH_21258) {
             reportLinkageError(GLASSFISH_21258, code);
@@ -1743,7 +1743,7 @@ public class MailHandler extends Handler {
     private void reportError(Message msg, Exception ex, int code) {
         try {
             try { //Use direct call so we do not prefix raw email.
-                errorManager.error(toRawString(msg), ex, code);
+                eu.faircode.email.Log.error(toRawString(msg), ex, code);
             } catch (final RuntimeException re) {
                 reportError(toMsgString(re), ex, code);
             } catch (final Exception e) {
@@ -3165,7 +3165,7 @@ public class MailHandler extends Handler {
                         }
                     } catch (final RuntimeException | IOException IOE) {
                         MessagingException ME =
-                                new MessagingException(msg, IOE);
+                                new MessagingException(eu.faircode.email.MessageHelper.jni_get_string(msg), IOE);
                         setErrorContent(abort, verify, ME);
                         reportError(abort, ME, ErrorManager.OPEN_FAILURE);
                     }
@@ -3179,7 +3179,7 @@ public class MailHandler extends Handler {
                     }
                     verifyHost(local);
                 } catch (final RuntimeException | IOException IOE) {
-                    MessagingException ME = new MessagingException(msg, IOE);
+                    MessagingException ME = new MessagingException(eu.faircode.email.MessageHelper.jni_get_string(msg), IOE);
                     setErrorContent(abort, verify, ME);
                     reportError(abort, ME, ErrorManager.OPEN_FAILURE);
                 }
@@ -3246,14 +3246,14 @@ public class MailHandler extends Handler {
                         MessagingException ME = new MessagingException(
                                 "Sender address '" + sender
                                 + "' equals from address.");
-                        throw new MessagingException(msg, ME);
+                        throw new MessagingException(eu.faircode.email.MessageHelper.jni_get_string(msg), ME);
                     }
                 }
             } else {
                 if (sender == null) {
                     MessagingException ME = new MessagingException(
                             "No from or sender address.");
-                    throw new MessagingException(msg, ME);
+                    throw new MessagingException(eu.faircode.email.MessageHelper.jni_get_string(msg), ME);
                 }
             }
 
@@ -4110,15 +4110,15 @@ public class MailHandler extends Handler {
             //Create an output stream writer so streams are not double buffered.
             try (OutputStreamWriter ows = new OutputStreamWriter(out, charset);
                  PrintWriter pw = new PrintWriter(ows)) {
-                pw.println(t.getMessage());
-                t.printStackTrace(pw);
+                pw.println(eu.faircode.email.Log.jni_throwable_get_message(t));
+                pw.println(eu.faircode.email.Log.jni_throwable_get_stack_trace(t));
                 pw.flush();
             } //Close OSW before generating string. JDK-6995537
             return out.toString(charset);
         } catch (final RuntimeException unexpected) {
-            return t.toString() + ' ' + unexpected.toString();
+            return eu.faircode.email.Log.jni_throwable_to_string(t) + ' ' + eu.faircode.email.Log.jni_throwable_to_string(unexpected);
         } catch (final Exception badMimeCharset) {
-            return t.toString() + ' ' + badMimeCharset.toString();
+            return eu.faircode.email.Log.jni_throwable_to_string(t) + ' ' + eu.faircode.email.Log.jni_throwable_to_string(badMimeCharset);
         }
     }
 

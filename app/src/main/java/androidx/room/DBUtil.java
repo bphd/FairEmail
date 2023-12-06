@@ -61,7 +61,7 @@ public class DBUtil {
      *
      * @deprecated This is only used in the generated code and shouldn't be called directly.
      */
-    @Deprecated
+    //@Deprecated
     @NonNull
     public static Cursor query(RoomDatabase db, SupportSQLiteQuery sqLiteQuery, boolean maybeCopy) {
         return query(db, sqLiteQuery, maybeCopy, null);
@@ -123,7 +123,7 @@ public class DBUtil {
 
         for (String triggerName : existingTriggers) {
             if (triggerName.startsWith("room_fts_content_sync_")) {
-                db.execSQL("DROP TRIGGER IF EXISTS " + triggerName);
+                eu.faircode.email.DB.jni_db_exec(db, "DROP TRIGGER IF EXISTS " + triggerName);
             }
         }
     }
@@ -133,7 +133,7 @@ public class DBUtil {
      */
     public static void foreignKeyCheck(@NonNull SupportSQLiteDatabase db,
             @NonNull String tableName) {
-        Cursor cursor = db.query("PRAGMA foreign_key_check(`" + tableName + "`)");
+        Cursor cursor = eu.faircode.email.DB.jni_db_query(db, "PRAGMA foreign_key_check(`" + tableName + "`)");
         try {
             if (cursor.getCount() > 0) {
                 String errorMsg = processForeignKeyCheckFailure(cursor);
