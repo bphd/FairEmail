@@ -324,8 +324,8 @@ public class Log {
                         return true;
                     }
                 });
-            } catch (Throwable ex1) {
-                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
+            } catch (Throwable ex) {
+                Log.i(ex);
             }
         return jni_log(android.util.Log.ERROR, TAG, msg);
     }
@@ -348,7 +348,7 @@ public class Log {
                     }
                 });
             } catch (Throwable ex1) {
-                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
+                Log.i(ex1);
             }
         return jni_log(android.util.Log.WARN, TAG, ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
@@ -367,7 +367,7 @@ public class Log {
                     }
                 });
             } catch (Throwable ex1) {
-                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
+                Log.i(ex1);
             }
         return jni_log(android.util.Log.ERROR, TAG, ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
@@ -387,7 +387,7 @@ public class Log {
                     }
                 });
             } catch (Throwable ex1) {
-                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
+                Log.i(ex1);
             }
         return jni_log(android.util.Log.WARN, TAG, prefix + " " + ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
@@ -403,7 +403,7 @@ public class Log {
                     }
                 });
             } catch (Throwable ex1) {
-                jni_log(android.util.Log.ERROR, TAG, ex1.toString());
+                Log.i(ex1);
             }
         return jni_log(android.util.Log.ERROR, TAG, prefix + " " + ex + "\n" + android.util.Log.getStackTraceString(ex));
     }
@@ -431,7 +431,7 @@ public class Log {
             if (enabled)
                 Bugsnag.startSession();
         } catch (Throwable ex) {
-            jni_log(android.util.Log.ERROR, TAG, ex.toString());
+            Log.i(ex);
         }
     }
 
