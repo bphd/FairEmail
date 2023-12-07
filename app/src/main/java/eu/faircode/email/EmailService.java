@@ -1075,7 +1075,7 @@ public class EmailService implements AutoCloseable {
                 if (tms.length > 1)
                     for (TrustManager tm : tms)
                         Log.e("Trust manager " + tm.getClass());
-
+/*
                 X509TrustManager tm = new X509TrustManager() {
                     // openssl s_client -connect <host>
 
@@ -1180,7 +1180,7 @@ public class EmailService implements AutoCloseable {
                         return false;
                     }
                 };
-
+*/
                 KeyManager[] km = null;
                 if (key != null && chain != null)
                     try {
@@ -1198,7 +1198,7 @@ public class EmailService implements AutoCloseable {
                     } catch (Throwable ex) {
                         Log.e(ex);
                     }
-                sslContext.init(km, new TrustManager[]{tm}, null);
+                sslContext.init(km, new TrustManager[]{rtm}, null);
             }
 
             factory = sslContext.getSocketFactory();
