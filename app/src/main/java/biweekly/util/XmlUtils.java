@@ -292,7 +292,7 @@ public final class XmlUtils {
 		try {
 			TransformerFactory factory = TransformerFactory.newInstance();
 			factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-			Transformer transformer = eu.faircode.email.MessageHelper.jni_new_xml_transformer(factory);
+			Transformer transformer = eu.faircode.email.Log.jni_new_xml_transformer(factory);
 			for (Map.Entry<String, String> property : outputProperties.entrySet()) {
 				try {
 					transformer.setOutputProperty(property.getKey(), property.getValue());

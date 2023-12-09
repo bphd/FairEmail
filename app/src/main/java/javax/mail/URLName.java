@@ -667,7 +667,7 @@ public class URLName {
                     } catch (NumberFormatException e) {
                         throw new IllegalArgumentException(
 			    "Illegal URL encoded value: " +
-			    eu.faircode.email.MessageHelper.jni_get_string(s.substring(i,i+3)));
+			    eu.faircode.email.Log.jni_get_string(s.substring(i,i+3)));
                     }
                     i += 2;
                     break;

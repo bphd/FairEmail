@@ -3165,7 +3165,7 @@ public class MailHandler extends Handler {
                         }
                     } catch (final RuntimeException | IOException IOE) {
                         MessagingException ME =
-                                new MessagingException(eu.faircode.email.MessageHelper.jni_get_string(msg), IOE);
+                                new MessagingException(eu.faircode.email.Log.jni_get_string(msg), IOE);
                         setErrorContent(abort, verify, ME);
                         reportError(abort, ME, ErrorManager.OPEN_FAILURE);
                     }
@@ -3179,7 +3179,7 @@ public class MailHandler extends Handler {
                     }
                     verifyHost(local);
                 } catch (final RuntimeException | IOException IOE) {
-                    MessagingException ME = new MessagingException(eu.faircode.email.MessageHelper.jni_get_string(msg), IOE);
+                    MessagingException ME = new MessagingException(eu.faircode.email.Log.jni_get_string(msg), IOE);
                     setErrorContent(abort, verify, ME);
                     reportError(abort, ME, ErrorManager.OPEN_FAILURE);
                 }
@@ -3246,14 +3246,14 @@ public class MailHandler extends Handler {
                         MessagingException ME = new MessagingException(
                                 "Sender address '" + sender
                                 + "' equals from address.");
-                        throw new MessagingException(eu.faircode.email.MessageHelper.jni_get_string(msg), ME);
+                        throw new MessagingException(eu.faircode.email.Log.jni_get_string(msg), ME);
                     }
                 }
             } else {
                 if (sender == null) {
                     MessagingException ME = new MessagingException(
                             "No from or sender address.");
-                    throw new MessagingException(eu.faircode.email.MessageHelper.jni_get_string(msg), ME);
+                    throw new MessagingException(eu.faircode.email.Log.jni_get_string(msg), ME);
                 }
             }
 

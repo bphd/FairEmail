@@ -24,6 +24,24 @@ void log_android(int prio, const char *fmt, ...) {
 }
 
 extern "C"
+JNIEXPORT jint JNICALL
+Java_eu_faircode_email_Log_jni_1get_1int(JNIEnv *env, jclass clazz, jint value) {
+    return value;
+}
+
+extern "C"
+JNIEXPORT jstring JNICALL
+Java_eu_faircode_email_Log_jni_1get_1string(JNIEnv *env, jclass clazz, jstring value) {
+    return value;
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_Log_jni_1get_1object(JNIEnv *env, jclass clazz, jobject value) {
+    return value;
+}
+
+extern "C"
 JNIEXPORT jstring JNICALL
 Java_eu_faircode_email_Log_jni_1throwable_1get_1message(JNIEnv *env, jclass clazz,
                                                         jthrowable ex) {
@@ -92,6 +110,14 @@ Java_eu_faircode_email_Log_jni_1char_1array_1writer_1write_1int(JNIEnv *env, jcl
     jclass cls = env->FindClass("java/io/CharArrayWriter");
     jmethodID mid = env->GetMethodID(cls, "write", "(I)V");
     env->CallVoidMethod(writer, mid, data);
+}
+
+extern "C"
+JNIEXPORT jobject JNICALL
+Java_eu_faircode_email_Log_jni_1new_1xml_1transformer(JNIEnv *env, jclass clazz, jobject factory) {
+    jclass cls = env->FindClass("javax/xml/transform/TransformerFactory");
+    jmethodID mid = env->GetMethodID(cls, "newTransformer", "()Ljavax/xml/transform/Transformer;");
+    return env->CallObjectMethod(factory, mid);
 }
 
 extern "C"
@@ -218,18 +244,6 @@ Java_eu_faircode_email_DB_jni_1sdb_1query(JNIEnv *env, jclass clazz, jobject db,
 }
 
 extern "C"
-JNIEXPORT jstring JNICALL
-Java_eu_faircode_email_MessageHelper_jni_1get_1string(JNIEnv *env, jclass clazz, jstring value) {
-    return value;
-}
-
-extern "C"
-JNIEXPORT jobject JNICALL
-Java_eu_faircode_email_MessageHelper_jni_1get_1object(JNIEnv *env, jclass clazz, jobject value) {
-    return value;
-}
-
-extern "C"
 JNIEXPORT void JNICALL
 Java_eu_faircode_email_MessageHelper_jni_1mime_1message_1write_1to(JNIEnv *env, jclass clazz,
                                                                    jobject message, jobject os,
@@ -256,14 +270,6 @@ Java_eu_faircode_email_MessageHelper_jni_1new_1imap_1message(JNIEnv *env, jclass
     jclass cls = env->FindClass("com/sun/mail/imap/IMAPMessage");
     jmethodID ctor = env->GetMethodID(cls, "<init>", "(Lcom/sun/mail/imap/IMAPFolder;I)V");
     return env->NewObject(cls, ctor, folder, msgnum);
-}
-
-extern "C"
-JNIEXPORT jobject JNICALL
-Java_eu_faircode_email_MessageHelper_jni_1new_1xml_1transformer(JNIEnv *env, jclass clazz, jobject factory) {
-    jclass cls = env->FindClass("javax/xml/transform/TransformerFactory");
-    jmethodID mid = env->GetMethodID(cls, "newTransformer", "()Ljavax/xml/transform/Transformer;");
-    return env->CallObjectMethod(factory, mid);
 }
 
 // -------

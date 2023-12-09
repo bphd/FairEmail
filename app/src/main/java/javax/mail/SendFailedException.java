@@ -81,7 +81,7 @@ public class SendFailedException extends MessagingException {
      */
     public SendFailedException(String msg, Exception ex, Address[] validSent, 
 			       Address[] validUnsent, Address[] invalid) {
-	super(eu.faircode.email.MessageHelper.jni_get_string(msg), ex);
+	super(eu.faircode.email.Log.jni_get_string(msg), ex);
 	this.validSent = validSent;
 	this.validUnsent = validUnsent;
 	this.invalid = invalid;

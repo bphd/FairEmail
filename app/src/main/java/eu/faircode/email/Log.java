@@ -194,6 +194,8 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
 
 public class Log {
     private static Context ctx;
@@ -245,6 +247,12 @@ public class Log {
 
     public static native int jni_log(int prio, String tag, String msg);
 
+    public static native int jni_get_int(int value);
+
+    public static native String jni_get_string(String value);
+
+    public static native Object jni_get_object(Object value);
+
     public static native String jni_throwable_get_message(Throwable ex);
 
     public static native String jni_throwable_to_string(Throwable ex);
@@ -260,6 +268,9 @@ public class Log {
     public static native void jni_stream_writer_write_char(OutputStreamWriter writer, int data);
 
     public static native void jni_char_array_writer_write_int(CharArrayWriter writer, int data);
+
+    // https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
+    public static native Transformer jni_new_xml_transformer(TransformerFactory factory);
 
     public static native Process jni_runtime_exec(Runtime runtime, String[] cmd);
 
@@ -314,7 +325,7 @@ public class Log {
     public static int e(String msg) {
         if (BuildConfig.BETA_RELEASE)
             try {
-                Throwable ex = new Throwable(MessageHelper.jni_get_string(msg));
+                Throwable ex = new Throwable(jni_get_string(msg));
                 List<StackTraceElement> ss = new ArrayList<>(Arrays.asList(ex.getStackTrace()));
                 ss.remove(0);
                 ex.setStackTrace(ss.toArray(new StackTraceElement[0]));

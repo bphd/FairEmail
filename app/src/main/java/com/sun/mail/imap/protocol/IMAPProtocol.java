@@ -2137,9 +2137,9 @@ public class IMAPProtocol extends Protocol {
     private Response[] fetch(String msgSequence, String what, boolean uid)
 			throws ProtocolException {
 	if (uid)
-	    return command("UID FETCH " + msgSequence +" (" + eu.faircode.email.MessageHelper.jni_get_string(what) + ")",null);
+	    return command("UID FETCH " + msgSequence +" (" + eu.faircode.email.Log.jni_get_string(what) + ")",null);
 	else
-	    return command("FETCH " + msgSequence + " (" + eu.faircode.email.MessageHelper.jni_get_string(what) + ")", null);
+	    return command("FETCH " + msgSequence + " (" + eu.faircode.email.Log.jni_get_string(what) + ")", null);
     }
 
     /**
@@ -2546,7 +2546,7 @@ public class IMAPProtocol extends Protocol {
 	if (charset == null) // text is all US-ASCII
 	    r = command("SEARCH", args);
 	else
-	    r = command("SEARCH CHARSET " + eu.faircode.email.MessageHelper.jni_get_string(charset), args);
+	    r = command("SEARCH CHARSET " + eu.faircode.email.Log.jni_get_string(charset), args);
 
 	Response response = r[r.length-1];
 	int[] matches = null;

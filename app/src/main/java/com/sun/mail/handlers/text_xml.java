@@ -81,7 +81,7 @@ public class text_xml extends text_plain {
 	try {
 		TransformerFactory factory = TransformerFactory.newInstance();
 		factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-		Transformer transformer = eu.faircode.email.MessageHelper.jni_new_xml_transformer(factory);
+		Transformer transformer = eu.faircode.email.Log.jni_new_xml_transformer(factory);
 	    StreamResult result = new StreamResult(os);
 	    if (obj instanceof DataSource) {
 		// Streaming transform applies only to

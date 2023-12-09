@@ -1342,10 +1342,10 @@ public class InternetAddress extends Address implements Cloneable {
 	    }
 	    if (c <= 040 || c == 0177)
 		throw new AddressException(
-				eu.faircode.email.MessageHelper.jni_get_string("Local address contains control or whitespace (" + Integer.toString(c) + ")"), addr);
+				eu.faircode.email.Log.jni_get_string("Local address contains control or whitespace (" + Integer.toString(c) + ")"), addr);
 	    if (c != ':' && specialsNoDot.indexOf(c) >= 0)
 		throw new AddressException(
-				eu.faircode.email.MessageHelper.jni_get_string("Local address contains illegal character '" + c + "'"), addr);
+				eu.faircode.email.Log.jni_get_string("Local address contains illegal character '" + c + "'"), addr);
 	}
 	if (inquote)
 	    throw new AddressException("Unterminated quote", addr);
@@ -1391,7 +1391,7 @@ public class InternetAddress extends Address implements Cloneable {
 		inliteral = false;
 	    } else if (c <= 040 || c == 0177) {
 		throw new AddressException(
-				eu.faircode.email.MessageHelper.jni_get_string("Domain contains control or whitespace (" + Integer.toString(c) + ")"), addr);
+				eu.faircode.email.Log.jni_get_string("Domain contains control or whitespace (" + Integer.toString(c) + ")"), addr);
 	    } else {
 		// RFC 2822 rule
 		//if (specialsNoDot.indexOf(c) >= 0)
@@ -1409,7 +1409,7 @@ public class InternetAddress extends Address implements Cloneable {
 		if (!inliteral) {
 		    if (!(Character.isLetterOrDigit(c) || c == '-' || c == '.'))
 			throw new AddressException(
-				    eu.faircode.email.MessageHelper.jni_get_string("Domain contains illegal character '" + c + "'"), addr);
+				    eu.faircode.email.Log.jni_get_string("Domain contains illegal character '" + c + "'"), addr);
 		    if (c == '.' && lastc == '.')
 			throw new AddressException(
 					"Domain contains dot-dot", addr);

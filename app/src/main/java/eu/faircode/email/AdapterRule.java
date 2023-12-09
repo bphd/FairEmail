@@ -189,7 +189,7 @@ public class AdapterRule extends RecyclerView.Adapter<AdapterRule.ViewHolder> {
 
                 tvCondition.setText(ssb);
             } catch (Throwable ex) {
-                tvCondition.setText(ex.getMessage());
+                tvCondition.setText(Log.jni_throwable_get_message(ex));
             }
 
             try {
@@ -279,7 +279,7 @@ public class AdapterRule extends RecyclerView.Adapter<AdapterRule.ViewHolder> {
                     }.execute(context, owner, args, "rule:folder");
                 }
             } catch (Throwable ex) {
-                tvAction.setText(ex.getMessage());
+                tvAction.setText(Log.jni_throwable_get_message(ex));
             }
 
             tvLastApplied.setText(rule.last_applied == null ? "-" : DF.format(rule.last_applied));

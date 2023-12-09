@@ -634,7 +634,7 @@ public class SMTPTransport extends Transport {
      * @since JavaMail 1.3.2
      */
     public synchronized String getLastServerResponse() {
-	return eu.faircode.email.MessageHelper.jni_get_string(lastServerResponse);
+	return eu.faircode.email.Log.jni_get_string(lastServerResponse);
     }
 
     /**
@@ -1108,7 +1108,7 @@ public class SMTPTransport extends Transport {
 	    String type3 = ntlm.generateType3Msg(
 		    getLastServerResponse().substring(4).trim());
 
-	    resp = simpleCommand(eu.faircode.email.MessageHelper.jni_get_string(type3));
+	    resp = simpleCommand(eu.faircode.email.Log.jni_get_string(type3));
 	}
     }
 
@@ -1726,7 +1726,7 @@ public class SMTPTransport extends Transport {
      */
     protected void helo(String domain) throws MessagingException {
 	if (domain != null)
-	    issueCommand("HELO " + eu.faircode.email.MessageHelper.jni_get_string(domain), 250);
+	    issueCommand("HELO " + eu.faircode.email.Log.jni_get_string(domain), 250);
 	else
 	    issueCommand("HELO", 250);
     }
@@ -2454,7 +2454,7 @@ public class SMTPTransport extends Transport {
 		issueCommand("RSET", -1);
 	    lastServerResponse = _lsr;	// restore, for get
 	    lastReturnCode = _lrc;
-	    throw new SMTPSendFailedException(eu.faircode.email.MessageHelper.jni_get_string(cmd), ret, eu.faircode.email.MessageHelper.jni_get_string(lastServerResponse),
+	    throw new SMTPSendFailedException(eu.faircode.email.Log.jni_get_string(cmd), ret, eu.faircode.email.Log.jni_get_string(lastServerResponse),
 			exception, validSentAddr, validUnsentAddr, invalidAddr);
 	}
     }

@@ -285,18 +285,11 @@ public class MessageHelper {
         System.loadLibrary("fairemail");
     }
 
-    public static native String jni_get_string(String value);
-
-    public static native Object jni_get_object(Object value);
-
     public static native void jni_mime_message_write_to(MimeMessage message, OutputStream os, String[] ignore);
 
     public static native void jni_mime_body_part_write_to(MimeMessage message, OutputStream os, String[] ignoreList, boolean allowutf8);
 
     public static native IMAPMessage jni_new_imap_message(IMAPFolder folder, int msgnum);
-
-    // https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html
-    public static native Transformer jni_new_xml_transformer(TransformerFactory factory);
 
     static void setSystemProperties(Context context) {
         System.setProperty("mail.mime.decodetext.strict", "false");

@@ -426,7 +426,7 @@ public class FragmentDialogOpenLink extends FragmentDialogBase {
                     @Override
                     protected void onException(Bundle args, Throwable ex) {
                         tvHost.setText(ex.getClass().getName());
-                        tvOwner.setText(ex.getMessage());
+                        tvOwner.setText(Log.jni_throwable_get_message(ex));
                     }
                 }.execute(FragmentDialogOpenLink.this, args, "link:owner");
             }

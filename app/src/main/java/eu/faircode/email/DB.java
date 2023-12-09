@@ -516,7 +516,7 @@ public abstract class DB extends RoomDatabase {
                         if (cache_size != null) {
                             cache_size = -cache_size; // kibibytes
                             Log.i("Set PRAGMA cache_size=" + cache_size);
-                            try (Cursor cursor = db.query("PRAGMA cache_size=" + cache_size + ";")) {
+                            try (Cursor cursor = db.query("PRAGMA cache_size=" + Log.jni_get_int(cache_size) + ";")) {
                                 cursor.moveToNext(); // required
                             }
                         }
@@ -536,7 +536,7 @@ public abstract class DB extends RoomDatabase {
                         // https://www.sqlite.org/pragma.html
                         for (String pragma : DB_PRAGMAS)
                             if (!"compile_options".equals(pragma) || BuildConfig.DEBUG)
-                                try (Cursor cursor = db.query("PRAGMA " + pragma + ";")) {
+                                try (Cursor cursor = db.query("PRAGMA " + Log.jni_get_string(pragma) + ";")) {
                                     boolean has = false;
                                     while (cursor.moveToNext()) {
                                         has = true;
@@ -605,22 +605,22 @@ public abstract class DB extends RoomDatabase {
                 image.add("'" + img + "'");
         String images = TextUtils.join(",", image);
 
-        db.execSQL("CREATE TRIGGER IF NOT EXISTS attachment_insert" +
+        db.execSQL(Log.jni_get_string("CREATE TRIGGER IF NOT EXISTS attachment_insert" +
                 " AFTER INSERT ON attachment" +
                 " BEGIN" +
                 "  UPDATE message SET attachments = attachments + 1" +
                 "  WHERE message.id = NEW.message" +
                 "  AND NEW.encryption IS NULL" +
                 "  AND NOT ((NEW.disposition = 'inline' OR (NEW.related IS NOT 0 AND NEW.cid IS NOT NULL)) AND NEW.type IN (" + images + "));" +
-                " END");
-        db.execSQL("CREATE TRIGGER IF NOT EXISTS attachment_delete" +
+                " END"));
+        db.execSQL(Log.jni_get_string("CREATE TRIGGER IF NOT EXISTS attachment_delete" +
                 " AFTER DELETE ON attachment" +
                 " BEGIN" +
                 "  UPDATE message SET attachments = attachments - 1" +
                 "  WHERE message.id = OLD.message" +
                 "  AND OLD.encryption IS NULL" +
                 "  AND NOT ((OLD.disposition = 'inline' OR (OLD.related IS NOT 0 AND OLD.cid IS NOT NULL)) AND OLD.type IN (" + images + "));" +
-                " END");
+                " END"));
 
         db.execSQL("CREATE TRIGGER IF NOT EXISTS account_update" +
                 " AFTER UPDATE ON account" +

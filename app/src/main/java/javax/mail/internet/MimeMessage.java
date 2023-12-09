@@ -734,7 +734,7 @@ public class MimeMessage extends Message implements MimePart {
 	if (s == null)
 	    removeHeader(name);
 	else
-	    setHeader(eu.faircode.email.MessageHelper.jni_get_string(name), eu.faircode.email.MessageHelper.jni_get_string(s));
+	    setHeader(eu.faircode.email.Log.jni_get_string(name), eu.faircode.email.Log.jni_get_string(s));
     }
 
     private void addAddressHeader(String name, Address[] addresses)
@@ -2212,7 +2212,7 @@ public class MimeMessage extends Message implements MimePart {
      */
     protected void updateMessageID() throws MessagingException {
 	setHeader("Message-ID", 
-		  eu.faircode.email.MessageHelper.jni_get_string("<" + UniqueValue.getUniqueMessageIDValue(session) + ">"));
+		  eu.faircode.email.Log.jni_get_string("<" + UniqueValue.getUniqueMessageIDValue(session) + ">"));
           
     }	
 

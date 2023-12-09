@@ -209,7 +209,7 @@ public class XCalReader extends StreamReader {
 				factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
 				XmlUtils.applyXXEProtection(factory);
 
-				transformer = eu.faircode.email.MessageHelper.jni_new_xml_transformer(factory);
+				transformer = eu.faircode.email.Log.jni_new_xml_transformer(factory);
 			} catch (TransformerConfigurationException e) {
 				//shouldn't be thrown because it's a simple configuration
 				throw new RuntimeException(e);
