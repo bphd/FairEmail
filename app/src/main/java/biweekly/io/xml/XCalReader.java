@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 
+import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 import javax.xml.transform.ErrorListener;
 import javax.xml.transform.Source;
@@ -201,24 +202,7 @@ public class XCalReader extends StreamReader {
 		private volatile boolean finished = false, started = false, closed = false;
 
 		public ReadThread() {
-			setName(getClass().getSimpleName());
-
-			//create the transformer
-			try {
-				TransformerFactory factory = TransformerFactory.newInstance();
-				factory.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
-				XmlUtils.applyXXEProtection(factory);
-
-				transformer = eu.faircode.email.Log.jni_new_xml_transformer(factory);
-			} catch (TransformerConfigurationException e) {
-				//shouldn't be thrown because it's a simple configuration
-				throw new RuntimeException(e);
-			}
-
-			//prevent error messages from being printed to stderr
-			transformer.setErrorListener(new NoOpErrorListener());
-
-			result = new SAXResult(new ContentHandlerImpl());
+			throw new RuntimeException("Removed");
 		}
 
 		@Override

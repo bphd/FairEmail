@@ -114,14 +114,6 @@ Java_eu_faircode_email_Log_jni_1char_1array_1writer_1write_1int(JNIEnv *env, jcl
 
 extern "C"
 JNIEXPORT jobject JNICALL
-Java_eu_faircode_email_Log_jni_1new_1xml_1transformer(JNIEnv *env, jclass clazz, jobject factory) {
-    jclass cls = env->FindClass("javax/xml/transform/TransformerFactory");
-    jmethodID mid = env->GetMethodID(cls, "newTransformer", "()Ljavax/xml/transform/Transformer;");
-    return env->CallObjectMethod(factory, mid);
-}
-
-extern "C"
-JNIEXPORT jobject JNICALL
 Java_eu_faircode_email_Log_jni_1runtime_1exec(JNIEnv *env, jclass clazz,
                                               jobject runtime, jobjectArray cmd) {
     jclass cls = env->FindClass("java/lang/Runtime");
