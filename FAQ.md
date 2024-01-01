@@ -5727,3 +5727,9 @@ GitHub issues are disabled due to frequent misusage.
 <br />
 
 Copyright &copy; 2018-2024 Marcel Bokhorst.
+
+# Alternative comparative
+
+# Ltt.Rs
+
+[TODO]
